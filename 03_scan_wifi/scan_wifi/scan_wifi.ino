@@ -9,7 +9,7 @@
  *
  *  1- Add https://espressif.github.io/arduino-esp32/package_esp32_index.json
  *     in the Additional Boards Manager URLS in the Preferences window.
- *  2- Install platform esp32 by Espressif version 3.0.1 or newer with the Boards Manager
+ *  2- Install platform esp32 by Espressif version 3.0.2 or newer with the Boards Manager
  *  3- Select the XIAO_ESP32C6 board
  *
  * Michel Deslierres

@@ -57,7 +57,7 @@ void iopins(void) {
   #else
   Serial.println("ARDUINO_XIAO_ESP32C6 not defined");
   #ifdef ARDUINO_XIAO_ESP32C3
-  Serial.println("ARDUINO_XIAO_ESP32C3 incorrectly defined");
+  Serial.println("ARDUINO_XIAO_ESP32C3 incorrectly defined"); // prior to version 3.0.2 esp32
   #endif
   #endif
 }

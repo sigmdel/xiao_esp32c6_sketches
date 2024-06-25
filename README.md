@@ -19,7 +19,7 @@ Install the latest Espressif ESP32 Arduino core.
 
  1. Add https://espressif.github.io/arduino-esp32/package_esp32_index.json in the Additional Boards Manager URLS in the Preferences window in the IDE.
   
- 1.  Install platform `esp32` by Espressif version 3.0.1 or newer with the Boards Manager
+ 1.  Install platform `esp32` by Espressif version 3.0.2 or newer with the Boards Manager
 
 Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project.
 
@@ -33,15 +33,21 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 
 | Project | Section in *First Look...* |
 | ---     | ---                           |
-| **01_pin_names** | [4. Pin Numbers and Names](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#pins) |
-| **02_blink_pulse_led** | [5. Blinky, Blinky](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#blink) |
-| **03_scan_wifi** | [6. Internal vs External Antenna](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#antenna_1) |
-| **04_wifi_blackhole** | [7. The Wi-Fi Blackhole](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#quirk) |
-| **05_wifi_tx_power** | [8. Connection Time vs Transmit Power](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#tx_power) |
+| **01_pin_names** | [5. Pin Numbers and Names](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#pins) |
+| **02_blink_pulse_led** | [6. Blinky, Blinky](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#blink) |
+| **03_scan_wifi** | [7. Internal vs External Antenna](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#antenna_1) |
+| **04_wifi_blackhole** | [8. The Wi-Fi Blackhole](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#quirk) |
+| **05_wifi_tx_power** | [9. Connection Time vs Transmit Power](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#tx_power) |
 
 ## Final Remarks
 
 This is a work in progress, with more sketches to be added as time permits.
+
+## Change
+
+2024-06-25: Updated after version 3.0.2 of `esp32` core released 
+
+2024-06-24: Initial version
 
 ## License
 
