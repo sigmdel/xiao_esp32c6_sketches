@@ -4,12 +4,11 @@
 
 ## Introduction
 
-The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminutive development boards. It is based on the Espressif ESP32-C3 SoC which, unlike other Espressif microcontrollers, has a RISC-V core.
-
+The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminutive development boards. It is based on the Espressif ESP32-C6 SoC which is the second Espressif microcontroller based on a RISC-V core.
 
 ## PlatformIO Notes
 
-The current  <a href="https://github.com/platformio/platform-espressif32/releases" target="_blank">platform</a> (version 6.7.0 dated May 14, 2024) for Espressif 32 bit devices available in PlatformIO (PIO) is based on version 2.0.16 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6. For that reason, these sketches cannot be easily compiled in PIO. Nevertheless the directory structure and file names are such that it should be easy to add this support when PIO is updated.
+The current  <a href="https://github.com/platformio/platform-espressif32/releases" target="_blank">platform</a> (version 6.7.0 dated May 14, 2024) for Espressif 32 bit devices available in PlatformIO (PIO) is based on version 2.0.16 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6. For that reason, these sketches cannot be easily compiled in PIO. Nevertheless the directory structure and file names are such that it will be easy to add this support when PIO is updated.
 
 
 ## Arduino IDE Notes
@@ -35,8 +34,10 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | Project | Section in *First Look...* |
 | ---     | ---                           |
 | **01_pin_names** | [4. Pin Numbers and Names](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#pins) |
-| **02_blink_pulse_led** | [5. Blinky, Blinky](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#blink)
-
+| **02_blink_pulse_led** | [5. Blinky, Blinky](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#blink) |
+| **03_scan_wifi** | [6. Internal vs External Antenna](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#antenna_1) |
+| **04_wifi_blackhole** | [7. The Wi-Fi Blackhole](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#quirk) |
+| **05_wifi_tx_power** | [8. Connection Time vs Transmit Power](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#tx_power) |
 
 ## Final Remarks
 
