@@ -38,6 +38,10 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **03_scan_wifi** | [7. Internal vs External Antenna](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#antenna_1) |
 | **04_wifi_blackhole** | [8. The Wi-Fi Blackhole](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#quirk) |
 | **05_wifi_tx_power** | [9. Connection Time vs Transmit Power](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#tx_power) |
+| **08_zigbee_switch**|  |
+| **09_zigbee_bulb**  |  |
+
+The last two are Zigbee example sketches from the `esp32` core. The Zigbee Light Bulb sketch had to be slightly modified to work with the XIAO ESP32C6. The two sketches are licensed under the Apache License, Version 2.0 by Espressif Systems (Shanghai) PTE LTD.
 
 ## Final Remarks
 
