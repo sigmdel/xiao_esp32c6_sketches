@@ -44,7 +44,7 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 
 For `wifi_blackhole`, `wifi_tx_power` and `async_web_led` create the `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
 
-It will be necessary to install to libraries to compile the `async_web_led` project. The details are in [librairies/README.md](libraries.README.md).
+It will be necessary to install two libraries to compile the `async_web_led` project. The details are in [librairies/README.md](libraries/README.md).
 
 The last two are Zigbee example sketches from the `esp32` core. The Zigbee Light Bulb sketch had to be slightly modified to work with the XIAO ESP32C6. The two sketches are licensed under the Apache License, Version 2.0 by Espressif Systems (Shanghai) PTE LTD.
 
@@ -52,7 +52,7 @@ The last two are Zigbee example sketches from the `esp32` core. The Zigbee Light
 
 This is a work in progress, with more sketches to be added as time permits.
 
-## Change
+## Change Log
 
 2024-06-27: Added async web led sketch and `libraries` directory
 
