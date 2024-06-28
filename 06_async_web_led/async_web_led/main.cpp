@@ -1,5 +1,3 @@
-#include <dummy.h>
-
 // Main module of async_web_led PlatformIO/Arduino sketch
 // Copyright: see notice in async_web_led.ino
 
@@ -13,6 +11,14 @@
 #if defined(BUILTIN_LED)
   static uint8_t ledPin = BUILTIN_LED;
   static uint8_t ledOn = LOW;
+#eiif defined(ARDUINO_XIAO_ESP32C3)
+  // Connect an external LED:
+  //  The diode's cathode (-, usually the short lead on the flat side of the LED) is connected to GND.
+  //  The diode's anode (+, usually the long lead on the round side of the LED) is connected to a
+  //  current limiting 240 ohm resistor. The other lead of the resistor is connected to an I/O pin.
+  //
+  static uint8_t ledPin = D10;
+  static uint8_t ledOn = HIGH;
 #else
   #error "ledPin not defined"
 #endif
