@@ -22,6 +22,12 @@
  * and also the correct partition scheme must be selected in Tools->Partition Scheme.
  *
  * Please check the README.md for instructions and more detailed description.
+ *
+ *---------------------------------------------------------------------------------------
+ *
+ * Modified to work with the XIAO ESP32C6 and added LQI_THRESHOLD if required
+ * Michel Deslierres
+ * June 27, 2024
  */
 
 #ifndef ZIGBEE_MODE_ED
