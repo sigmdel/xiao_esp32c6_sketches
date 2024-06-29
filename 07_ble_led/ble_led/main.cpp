@@ -10,7 +10,7 @@
 //
 //#define USE_CUSTOM_UUIDS
 
-#define BLUETOOTH_NAME  "ESP32_BLE"
+#define BLUETOOTH_NAME  "BLE_LED"
 
 #ifdef USE_CUSTOM_UUIDS
   // Custom UUID for service and characteristic must not conflict with a reserved UUID 
@@ -20,11 +20,11 @@
   #define SERVICE_UUID        "57a81fc3-3c5f-4d29-80e7-8b074e34888c"
   #define CHARACTERISTIC_UUID "2eeae074-8955-47f7-9470-73f85112974f"
 #else 
-  #define SERVICE_UUID        "00001815-0000-1000-8000-00805F9B34FB"  // Automation IO Service
-                            //"00001812-0000-1000-8000-00805F9B34FB"  // Human Interface Device Service
-                            //"0000181c-0000-1000-8000-00805F9B34FB"  // User Data Service
-  #define CHARACTERISTIC_UUID "00002BE2-0000-1000-8000-00805F9B34FB"  // Light Output
-                            //"00002B05-0000-1000-8000-00805F9B34FB"  // Power 
+  #define SERVICE_UUID        "1815" //"00001815-0000-1000-8000-00805F9B34FB"  // Automation IO Service
+                            //"1812" //"00001812-0000-1000-8000-00805F9B34FB"  // Human Interface Device Service
+                            //"181c" //"0000181c-0000-1000-8000-00805F9B34FB"  // User Data Service
+  #define CHARACTERISTIC_UUID "2BE2" //"00002BE2-0000-1000-8000-00805F9B34FB"  // Light Output
+                            //"2BO5" //"00002B05-0000-1000-8000-00805F9B34FB"  // Power 
 #endif                          
 
 #if defined(BUILTIN_LED)
