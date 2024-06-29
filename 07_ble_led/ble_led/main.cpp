@@ -8,7 +8,7 @@
 // or it can use some more or less valid reserved UUID from the Bluetooth(R) 
 // Assigned Numbers document https://www.bluetooth.com/specifications/assigned-numbers/ 
 //
-//#define USE_CUSTOM_UUIDS
+#define USE_CUSTOM_UUIDS
 
 #define BLUETOOTH_NAME  "BLE_LED"
 
@@ -53,6 +53,22 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
+class WriteCallbacks : public BLECharacteristicCallbacks {
+  void onWrite(BLECharacteristic *pCharacteristic) {
+    String value = pCharacteristic->getValue().c_str();
+    if (value == "on") {      
+      digitalWrite(ledPin, ledOn); 
+      Serial.println("Received \"on\" value");
+    } else if(value == "off"){
+      digitalWrite(ledPin, 1-ledOn);
+      Serial.println("Received \"off\" value");
+    } else {
+      Serial.printf("Received non valid \"%s\" value \n", value.c_str());
+    }  
+  }
+};
+
+
 void setup() {
   #if defined(ARDUINO_ESP32C6)
   Serial.begin();
@@ -82,6 +98,7 @@ void setup() {
   pCharacteristic = pService->createCharacteristic(
                       CHARACTERISTIC_UUID,
                       BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
+  pCharacteristic->setCallbacks(new WriteCallbacks);
 
   Serial.println("Starting BLE service");
   pService->start();
@@ -100,20 +117,11 @@ void setup() {
   Serial.println(BLEDevice::getAddress().toString().c_str());
 }
 
+unsigned long timer = 0;
+
 void loop() {
-  if (deviceConnected && pCharacteristic->getValue().length() > 0) {
-    String value = pCharacteristic->getValue().c_str();
-    if (value == "on") {      
-      digitalWrite(ledPin, ledOn); 
-      Serial.println("Received \"on\" value");
-    } else if(value == "off"){
-      digitalWrite(ledPin, 1-ledOn);
-      Serial.println("Received \"off\" value");
-    } else {
-      Serial.printf("Received non valid \"%s\" value \n", value.c_str());
-    }  
-    // avoid repeated processing of the command
-    value = "";
-    pCharacteristic->setValue(value);
-  } 
-}
+  if (millis() - timer > 5000) {
+    Serial.println(" - loop busy work");
+    timer = millis();
+  }
+}  
