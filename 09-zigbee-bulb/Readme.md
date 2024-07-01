@@ -53,8 +53,10 @@ static void esp_zb_task(void *pvParameters) {
   esp_zb_device_register(esp_zb_on_off_light_ep);
   esp_zb_core_action_handler_register(zb_action_handler);
   esp_zb_set_primary_network_channel_set(ESP_ZB_PRIMARY_CHANNEL_MASK);
-  esp_zb_secur_network_min_join_lqi_set(32);  //<< https://github.com/espressif/esp-zigbee-sdk/issues/363#issuecomment-2160086939
-
+  #if defined(LQI_THRESHOLD)
+  esp_zb_secur_network_min_join_lqi_set(LQI_THRESHOLD);
+  #endif
+  
   //Erase NVRAM before creating connection to new Coordinator
   esp_zb_nvram_erase_at_start(true);  //Comment out this line to erase NVRAM data if you are conneting to new Coordinator
 
