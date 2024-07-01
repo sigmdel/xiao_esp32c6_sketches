@@ -39,8 +39,8 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6 | [Zigbee_Light_Switch]("https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch") example from the esp32-arduino core |
-| **09_zigbee_bulb**  | 6 | Modified [Zigbee_Light_Bulb]("https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb") example from the esp32-arduino core. |
+| **08_zigbee_switch**| 6 | [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
+| **09_zigbee_bulb**  | 6 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core. |
 
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
