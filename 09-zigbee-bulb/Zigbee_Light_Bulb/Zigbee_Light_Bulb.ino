@@ -53,7 +53,7 @@
 // errors, try lowering the reducing the minimum LQI value for 
 // network joining as per xiequnan 
 // @ https://github.com/espressif/esp-zigbee-sdk/issues/363#issuecomment-2160086939
-//#define LQI_THRESHOLD 32
+#define LQI_THRESHOLD 32
 
 /* Default End Device config */
 #define ESP_ZB_ZED_CONFIG()                                                                 \
