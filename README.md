@@ -39,7 +39,7 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6 | [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
+| **08_zigbee_switch**| 6 | Modified [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
 | **09_zigbee_bulb**  | 6 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core. |
 
 NB:
@@ -48,13 +48,17 @@ NB:
   3.  Released under the GNU LESSER GENERAL PUBLIC LICENSE.
   4.  Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
   5. Need to install two libraries. The details are in [librairies/README.md](libraries/README.md).
-  6.  Released under the Apache License, Version 2.0 .
+  6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
 
-Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board.
+Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It was necessary to use an external antenna to achieve the pairing, but it may not be the case in another situation.
 
 See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs.
 
 ## Change Log
+
+2024-07-07: Added support for an external antenna (for XIAO ESP32C6) in Zigbee examples 
+
+2024-07-01: Set LQI threshold only when LQI_THRESHOLD macro is defined in the  Zigbee Bulb example
 
 2024-06-29: Improved ble_led
 
