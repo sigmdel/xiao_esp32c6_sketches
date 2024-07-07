@@ -25,9 +25,13 @@
  *
  *---------------------------------------------------------------------------------------
  *
- * Modified to work with the XIAO ESP32C6 and added LQI_THRESHOLD if required
+ * Modified to work with the XIAO ESP32C6 
+ *   - added ANTENNA_PIN if using external antenna 
+ *   - added LQI_THRESHOLD macro if required
+ *   - uses single yellow builtin LED instead of RGB LED
+ *
  * Michel Deslierres
- * June 27, 2024
+ * July 7, 2024
  */
 
 #ifndef ZIGBEE_MODE_ED
@@ -39,13 +43,10 @@
 #include "freertos/task.h"
 #include "ha/esp_zigbee_ha_standard.h"
 
-#if defined(RGB_BUILTIN)
-  #define LED_PIN RGB_BUILTIN
-#elif defined(LED_BUILTIN)
-  #define LED_PIN LED_BUILTIN
-  #define LED_ON LOW           // LOW = I/O pin must be grounded to turn on LED
-#else
-  #error "NO LED defined"
+#if defined(ARDUINO_XIAO_ESP32C6)
+// An onboard ceramic antenna is used by default, but an external antenna can be used instead
+// in which case uncomment the following macro definition.
+//#define ANTENNA_PIN 14
 #endif
 
 // If a connection cannot be made resulting in 
@@ -54,6 +55,16 @@
 // network joining as per xiequnan 
 // @ https://github.com/espressif/esp-zigbee-sdk/issues/363#issuecomment-2160086939
 #define LQI_THRESHOLD 32
+
+// Use correct builtin LED
+#if defined(RGB_BUILTIN)
+  #define LED_PIN RGB_BUILTIN
+#elif defined(LED_BUILTIN)
+  #define LED_PIN LED_BUILTIN
+  #define LED_ON LOW           // LOW = I/O pin must be grounded to turn on LED
+#else
+  #error "NO LED defined"
+#endif
 
 /* Default End Device config */
 #define ESP_ZB_ZED_CONFIG()                                                                 \
@@ -191,6 +202,12 @@ static esp_err_t zb_attribute_handler(const esp_zb_zcl_set_attr_value_message_t 
 
 /********************* Arduino functions **************************/
 void setup() {
+  // Init I/O pin for external antenna if ANTENNA_PIN is defined
+  #if defined(ANTENNA_PIN)
+  pinMode(ANTENNA_PIN, OUTPUT);
+  digitalWrite(ANTENNA_PIN, HIGH); 
+  #endif
+  
   // Init Zigbee
   esp_zb_platform_config_t config = {
     .radio_config = ESP_ZB_DEFAULT_RADIO_CONFIG(),

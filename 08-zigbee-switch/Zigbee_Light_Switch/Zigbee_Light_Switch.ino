@@ -23,6 +23,14 @@
  * and also the correct partition scheme must be selected in Tools->Partition Scheme.
  *
  * Please check the README.md for instructions and more detailed description.
+ *
+ *---------------------------------------------------------------------------------------
+ *
+ * Modified to work with the XIAO ESP32C6 
+ *   - added ANTENNA_PIN macro if using an external antenna 
+ *
+ * Michel Deslierres
+ * July 7, 2024
  */
 
 #ifndef ZIGBEE_MODE_ZCZR
@@ -33,6 +41,12 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "ha/esp_zigbee_ha_standard.h"
+
+#if defined(ARDUINO_XIAO_ESP32C6)
+// An onboard ceramic antenna is used by default, but an external antenna can be used instead
+// in which case uncomment the following macro definition.
+//#define ANTENNA_PIN 14
+#endif
 
 /* Switch configuration */
 #define GPIO_INPUT_IO_TOGGLE_SWITCH GPIO_NUM_9        //md Boot button
@@ -237,6 +251,12 @@ static void switch_gpios_intr_enabled(bool enabled) {
 
 /********************* Arduino functions **************************/
 void setup() {
+  // Init I/O pin for external antenna if ANTENNA_PIN is defined  
+  #if defined(ANTENNA_PIN)
+  pinMode(ANTENNA_PIN, OUTPUT);
+  digitalWrite(ANTENNA_PIN, HIGH); 
+  #endif
+  
   // Init Zigbee
   esp_zb_platform_config_t config = {
     .radio_config = ESP_ZB_DEFAULT_RADIO_CONFIG(),
