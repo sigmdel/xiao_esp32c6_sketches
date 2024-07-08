@@ -1,6 +1,6 @@
 /*
  * pin_names.ino
- * List I/O pin names and numbers of the XIAO ESP32C6
+ * Lists XIAO ESP32C6 I/O pin numbers and their Arduino names
  *
  * This is a stub to satisfy the Arduino IDE, the source code is in
  * the file main.cpp in the same directory.
