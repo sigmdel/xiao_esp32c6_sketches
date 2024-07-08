@@ -49,7 +49,7 @@ NB:
   2. Similar to sketch in [supermini_esp32c3_sketches](https://github.com/sigmdel/supermini_esp32c3_sketches)
   3.  Released under the GNU LESSER GENERAL PUBLIC LICENSE.
   4.  Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
-  5. Need to install two libraries. The details are in [librairies/README.md](libraries/README.md).
+  5. Need to install two libraries. The details are in [libraries/README.md](libraries/README.md).
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
   7. Requires an external pull up resistor.
 
