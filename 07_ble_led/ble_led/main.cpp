@@ -1,4 +1,7 @@
+// Main module of ble_led.ino
+// Copyright: see notice in ble_led.ino
 
+#include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>

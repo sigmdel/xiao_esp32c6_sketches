@@ -1,6 +1,8 @@
 // Main module of blink_pulse_led
 // Copyright: see notice in blink_pulse.ino
 
+#include <Arduino.h>
+
 static uint8_t ledPin = LED_BUILTIN;   // yellow LED cathode connected to digital pin
 static uint8_t ledOn = LOW;            // the LED anode is connected to 3.3V via 1.5K resistor
 

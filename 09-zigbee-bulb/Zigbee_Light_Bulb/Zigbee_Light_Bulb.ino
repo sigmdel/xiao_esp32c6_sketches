@@ -38,6 +38,7 @@
 #error "Zigbee end device mode is not selected in Tools->Zigbee mode"
 #endif
 
+#include <Arduino.h>
 #include "esp_zigbee_core.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -107,6 +108,12 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct) {
       esp_zb_bdb_start_top_level_commissioning(ESP_ZB_BDB_MODE_INITIALIZATION);
       break;
     case ESP_ZB_BDB_SIGNAL_DEVICE_FIRST_START:
+  esp_zb_enable_joining_to_distributed
+  
+  ing_ to_distributed(true); // not declared in scope
+  uint8_t secret_zll_trust_center_key[] = { 0x9F, 0x55, 0x95, 0xF1, 0x02, 0x57, 0xC8, 0xA4, 0x69, 0xCB, 0xF4, 0x2B, 0xC9, 0x3F, 0xEE, 0x31 };
+  esp_zb_secur_TC_standard_distributed_key_set(secret_zll_trust_center_key);
+
     case ESP_ZB_BDB_SIGNAL_DEVICE_REBOOT:
       if (err_status == ESP_OK) {
         log_i("Device started up in %s factory-reset mode", esp_zb_bdb_is_factory_new() ? "" : "non");
@@ -146,6 +153,12 @@ static esp_err_t zb_action_handler(esp_zb_core_action_callback_id_t callback_id,
     default:                               log_w("Receive Zigbee action(0x%x) callback", callback_id); break;
   }
   return ret;
+  esp_zb_enable_joining_to_distributed
+  
+  ing_ to_distributed(true); // not declared in scope
+  uint8_t secret_zll_trust_center_key[] = { 0x9F, 0x55, 0x95, 0xF1, 0x02, 0x57, 0xC8, 0xA4, 0x69, 0xCB, 0xF4, 0x2B, 0xC9, 0x3F, 0xEE, 0x31 };
+  esp_zb_secur_TC_standard_distributed_key_set(secret_zll_trust_center_key);
+
 }
 
 static void esp_zb_task(void *pvParameters) {
