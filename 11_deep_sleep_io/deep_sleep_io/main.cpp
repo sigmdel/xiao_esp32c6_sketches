@@ -17,15 +17,15 @@ NOTE
 
 #include <Arduino.h>
 
-// In principle D0, D1 and D2 (I/O pins 0, 1 and 2) can be to 
-// ground to wake the board from deep sleep.
+// In principle D0, D1 or D2 (I/O pins 0, 1, 2) can be  
+// grounded to wake the board from deep sleep.
 const int wakeUpPin = 0; 
 
 // On board yellow LED
 const int ledPin = BUILTIN_LED;
 const int ledOn = LOW;
 
-// Counter for number restarts stored in non-volatile memory
+// Counter for restarts stored in non-volatile memory
 RTC_DATA_ATTR int bootCount = 0; 
 
 void blink(int count=1, int ms=50) {
@@ -55,12 +55,12 @@ void setup() {
   // Delay for 5 seconds
   delay(5000); 
 
-  // Quick LED blinks announcing start of deep sleep
-  blink(5);
-
   // Configure the I/O wake-up source 
   if (esp_sleep_enable_ext1_wakeup(1 << wakeUpPin, ESP_EXT1_WAKEUP_ANY_LOW) == ESP_OK) {
  
+    // Quick LED blinks announcing start of deep sleep
+    blink(5);
+
     // Enter deep sleep
     esp_deep_sleep_start(); 
 
