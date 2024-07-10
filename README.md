@@ -59,6 +59,8 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## Change Log
 
+2024-07-09: Included use of the Serial peripheral in deep sleep examples
+
 2024-07-08: Added deep sleep examples
 
 2024-07-07: Added support for an external antenna (for XIAO ESP32C6) in Zigbee examples 
