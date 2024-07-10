@@ -12,13 +12,17 @@ OPERATION
   wakeUpPin will wake up the board and the cycle will repeat.
   
 NOTE
-   Adding Serial print statements seems to break this. 
+  Define the USE_SERIAL macro to print statements to the 
+  console with the Serial peripheral
 *************************************************************/
 
 #include <Arduino.h>
 
-// In principle D0, D1 or D2 (I/O pins 0, 1, 2) can be  
-// grounded to wake the board from deep sleep.
+//#define USE_SERIAL 
+
+// Only RTC IO pins 0 to 7 can be used as a source for external 
+// wake on the ESP32-C6 which means only pins D0, D1 or D2 
+// for that purpose on the XIAO ESP32C6
 const int wakeUpPin = 0; 
 
 // On board yellow LED
@@ -28,6 +32,7 @@ const int ledOn = LOW;
 // Counter for restarts stored in non-volatile memory
 RTC_DATA_ATTR int bootCount = 0; 
 
+// Flash LED for count times with ms on and off times
 void blink(int count=1, int ms=50) {
   for (int i=0; i<count; i++) {
     digitalWrite(ledPin, ledOn);
@@ -37,7 +42,38 @@ void blink(int count=1, int ms=50) {
   }
 }  
 
+#if defined(USE_SERIAL)
+  // Print the sleep wakeup cause 
+  void print_wakeup_reason(void) {
+    esp_sleep_wakeup_cause_t wakeup_reason;
+    wakeup_reason = esp_sleep_get_wakeup_cause();
+    switch(wakeup_reason) {
+      case ESP_SLEEP_WAKEUP_UNDEFINED : Serial.println("Reset was not caused by exit from deep sleep"); break;
+      case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
+      case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
+      case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
+      case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
+      case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
+      case ESP_SLEEP_WAKEUP_GPIO : Serial.println("Wakeup caused by GPIO (light sleep only on ESP32, S2 and S3)"); break;
+      case ESP_SLEEP_WAKEUP_UART : Serial.println("Wakeup caused by UART (light sleep only)"); break;
+      case ESP_SLEEP_WAKEUP_WIFI : Serial.println("Wakeup caused by WIFI (light sleep only)"); break;
+      case ESP_SLEEP_WAKEUP_COCPU : Serial.println("Wakeup caused by COCPU int"); break;
+      case ESP_SLEEP_WAKEUP_COCPU_TRAP_TRIG : Serial.println("Wakeup caused by COCPU crash"); break;
+      case ESP_SLEEP_WAKEUP_BT : Serial.println("Wakeup caused by BT (light sleep only)"); break;
+      default : Serial.printf("Unknown wakeup or reset reason (%d)\n",wakeup_reason); break;
+    }
+  }
+#endif
+
 void setup() { 
+
+  #if defined(USE_SERIAL)
+  Serial.begin();
+  delay(3000);
+  Serial.println("\nDeep Sleep I/O Example");
+  print_wakeup_reason();
+  #endif
+
   // Set wake up pin as an input 
   // See https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep
   // for notes about pull up resistors 
@@ -49,6 +85,10 @@ void setup() {
   // Increment boot count
   bootCount++;
 
+  #if defined(USE_SERIAL)
+  Serial.printf("Boot count: %d\n", bootCount);
+  #endif
+
   // Display bootcount with slow LED blinks
   blink(bootCount, 750); 
   
@@ -58,6 +98,13 @@ void setup() {
   // Configure the I/O wake-up source 
   if (esp_sleep_enable_ext1_wakeup(1 << wakeUpPin, ESP_EXT1_WAKEUP_ANY_LOW) == ESP_OK) {
  
+    #if defined(USE_SERIAL)   
+    Serial.println("Closing Serial peripheral and going into deep sleep after LED flashes.");
+    Serial.printf("Ground I/O pin D%d to wake from the deep sleep.\n", wakeUpPin);
+    Serial.flush();
+    Serial.end();
+    #endif
+
     // Quick LED blinks announcing start of deep sleep
     blink(5);
 
@@ -66,14 +113,15 @@ void setup() {
 
   } else {  
  
+    #if not defined(USE_SERIAL)
     Serial.begin();
+    #endif
     while (true) {
       delay(2000);
       Serial.println("Cannot go into deep sleep mode");
     }  
  
   }
- 
 }
 
 void loop() {
