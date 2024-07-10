@@ -7,7 +7,7 @@
 #include <Arduino.h>
 
 void iopins(void) {
-  Serial.println("\n\nXIAO ESP32C3 I/O Pin Names and Numbers");
+  Serial.println("\n\nXIAO ESP32C6 I/O Pin Names and Numbers");
 
   Serial.println("\nThe symbolic name and corresponding I/O number of the 11 digital pins");
   Serial.printf(" D0 = %2d\n", D0);
