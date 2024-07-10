@@ -36,7 +36,7 @@ void iopins(void) {
   Serial.printf(" SCL = %2d [I2C]  (=D5)\n", SCL);
 
   Serial.printf("  SS = %2d [SPI]  (=D3)\n", SS);
-  Serial.printf("MOSI = %2d [SPI]  (=18)\n", MOSI);
+  Serial.printf("MOSI = %2d [SPI]  (=D10)\n", MOSI);
   Serial.printf("MISO = %2d [SPI]  (=D9)\n", MISO);
   Serial.printf(" SCK = %2d [SPI]  (=D8)\n", SCK);
   
