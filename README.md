@@ -5,6 +5,8 @@
 
 The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminutive development boards. It is based on the Espressif ESP32-C6 SoC which is the second Espressif microcontroller based on a RISC-V core.
 
+![](images/ESP32C6_pinout.png)
+
 ## PlatformIO Notes
 
 The current  <a href="https://github.com/platformio/platform-espressif32/releases" target="_blank">platform</a> (version 6.7.0 dated May 14, 2024) for Espressif 32 bit devices available in PlatformIO (PIO) is based on version 2.0.16 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6. For that reason, these sketches cannot be easily compiled in PIO. Nevertheless the directory structure and file names are such that it will be easy to add this support when PIO is updated.
@@ -53,11 +55,19 @@ NB:
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
   7. Requires an external pull up resistor.
 
-Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It was necessary to use an external antenna to achieve the pairing, but it may not be the case in another situation.
+### About `08_zigbee_switch` and `09_zigbee_bulb`: 
+
+Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
+
+The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It was necessary to use an external antenna to achieve the pairing, but it may not be the case in another situation.
+
+### Further Details:
 
 See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs.
 
 ## Change Log
+
+2024-07-18: Add board pinout
 
 2024-07-09: Included use of the Serial peripheral in deep sleep examples
 
