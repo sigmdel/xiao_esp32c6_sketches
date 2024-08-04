@@ -44,6 +44,16 @@ void iopins(void) {
   Serial.printf("LED_BUILTIN = %d\n", LED_BUILTIN);
   Serial.printf("BUILTIN_LED = %d // backward compatibility\n", BUILTIN_LED);
   
+  Serial.println("\nAntenna");
+  if (ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+    Serial.printf("    WIFI_ENABLE = %d  (RF switch power enable I/O)\n", WIFI_ENABLE);
+    Serial.printf("WIFI_ANT_CONFIG = %d (RF switch select control I/O)\n", WIFI_ANT_CONFIG);
+  } else {
+    Serial.printf("RF switch I/O not defined in ESP32 %s\n", ESP_ARDUINO_VERSION_STR);
+    Serial.println("  RF switch power enable I/O = 3   (= WIFI_ENABLE     in ESP32 core 3.0.4 or later)");
+    Serial.println("RF switch select control I/O = 14  (= WIFI_ANT_CONFIG in ESP32 core 3.0.4 or later");
+  }
+
   Serial.println("\nOther macros"); 
   Serial.printf("USB_VID          = 0x%04x\n", USB_VID);
   Serial.printf("USB_PID          = 0x%04x\n", USB_PID);
