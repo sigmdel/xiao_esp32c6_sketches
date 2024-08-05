@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include "WiFi.h"
 
+//#define ENABLE_RF_SWITCH  
 //#define USE_EXTERNAL_ANTENNA
 
 void setup() {
@@ -18,14 +19,40 @@ void setup() {
   WiFi.disconnect();
   delay(2000);
 
-  pinMode(14, OUTPUT);
+  // Take care of RF switch according to the two macros defined above and 
+  // the version of the ESP32 Arduino core being used.
+  if (ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+    // In ESP32 3.0.4+ the initVarian() function enables the RF switch 
+    // and selects the internal antenna
+    #ifndef ENABLE_RF_SWITCH
+    digitalWrite(WIFI_ENABLE, HIGH); // disable the switch
+    #endif
+    #ifdef USE_EXTERNAL_ANTENNA
+    digitalWrite(WIFI_ANT_CONFIG, HIGH); // select the external antenna
+    #endif
+   } else {
+    // no initVariant() in older ESP32 cores
+    #ifdef ENABLE_RF_SWITCH
+    pinMode(3, OUTPUT);
+    digitalWrite(3, LOW);
+    #endif
+    #ifdef USE_EXTERNAL_ANTENNA
+    pinMode(14, OUTPUT);
+    digitalWrite(14, HIGH);
+    #endif
+  }
+
+  Serial.print("The RF switch is ");
+  #ifndef ENABLE_RF_SWITCH  
+  Serial.println("not ");
+  #endif
+  Serial.println("enabled.");
+
   Serial.print("Using ");
   #ifdef USE_EXTERNAL_ANTENNA
     Serial.print("an external");
-    digitalWrite(14, HIGH);  
   #else
     Serial.print("the internal");
-    digitalWrite(14, LOW);  
   #endif
   Serial.println(" antenna.\nSetup done");
 }
