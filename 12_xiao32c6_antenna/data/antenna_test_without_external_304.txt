@@ -1,0 +1,300 @@
+Antenna Test Without External Antenna
+ESP32 Arduino 3.0.4
+
+Initial scan with default antenna settings
+in ESP32 Arduino version 3.0.4
+--------------------------------------------
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -47 |  1 |
+ 2 | netlan                 |  -47 |  6 |
+ 3 | netiot                 |  -49 |  6 |
+              Average  RSSI |  -47.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netiot                 |  -49 |  6 |
+ 3 | netlan                 |  -49 |  6 |
+              Average  RSSI |  -46.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netiot                 |  -45 |  6 |
+ 3 | netlan                 |  -46 |  6 |
+              Average  RSSI |  -43.7
+
+
+Starting test suite
+-------------------
+Test #1
+RF_SWITCH_VDD and RF_SWITCH_VCTL I/O pins are in INPUT mode; the RF switch is in its default state
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -61 |  1 |
+ 2 | netlan                 |  -65 |  6 |
+ 3 | netiot                 |  -68 |  6 |
+              Average  RSSI |  -64.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netiot                 |  -66 |  6 |
+ 3 | netlan                 |  -68 |  6 |
+              Average  RSSI |  -65.3
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netlan                 |  -66 |  6 |
+ 3 | netiot                 |  -69 |  6 |
+              Average  RSSI |  -65.7
+
+Test #2
+RF_SWITCH_VDD I/O pin in INPUT mode; RF_SWITCH_VCTL is OUTPUT = INTERNAL_ANTENNA (LOW)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -61 |  1 |
+ 2 | netiot                 |  -65 |  6 |
+ 3 | netlan                 |  -66 |  6 |
+              Average  RSSI |  -64.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -61 |  1 |
+ 2 | netiot                 |  -65 |  6 |
+ 3 | netlan                 |  -65 |  6 |
+              Average  RSSI |  -63.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -61 |  1 |
+ 2 | netiot                 |  -65 |  6 |
+ 3 | netlan                 |  -67 |  6 |
+              Average  RSSI |  -64.3
+
+Test #3
+RF_SWITCH_VDD I/O pin in INPUT mode; RF_SWITCH_VCTL is OUTPUT = EXTERNAL_ANTENNA (HIGH)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netlan                 |  -66 |  6 |
+ 3 | netiot                 |  -68 |  6 |
+              Average  RSSI |  -65.3
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netiot                 |  -65 |  6 |
+ 3 | netlan                 |  -65 |  6 |
+              Average  RSSI |  -64.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -63 |  1 |
+ 2 | netiot                 |  -66 |  6 |
+ 3 | netlan                 |  -66 |  6 |
+              Average  RSSI |  -65.0
+
+Test #4
+RF_SWITCH_VDD is OUTPUT = DISABLE_RF_SWITCH (HIGH); RF_SWITCH_VCTL I/O pin in INPUT mode
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -63 |  1 |
+ 2 | netiot                 |  -67 |  6 |
+ 3 | netlan                 |  -67 |  6 |
+              Average  RSSI |  -65.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netiot                 |  -64 |  6 |
+ 3 | netlan                 |  -65 |  6 |
+              Average  RSSI |  -63.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netlan                 |  -64 |  6 |
+ 3 | netiot                 |  -65 |  6 |
+              Average  RSSI |  -63.7
+
+Test #5
+RF_SWITCH_VDD is OUTPUT = DISABLE_RF_SWITCH (HIGH); RF_SWITCH_VCTL is OUTPUT = INTERNAL_ANTENNA (LOW)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -60 |  1 |
+ 2 | netiot                 |  -64 |  6 |
+ 3 | netlan                 |  -64 |  6 |
+              Average  RSSI |  -62.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -61 |  1 |
+ 2 | netiot                 |  -63 |  6 |
+ 3 | netlan                 |  -64 |  6 |
+              Average  RSSI |  -62.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -60 |  1 |
+ 2 | netlan                 |  -64 |  6 |
+ 3 | netiot                 |  -66 |  6 |
+              Average  RSSI |  -63.3
+
+Test #6
+RF_SWITCH_VDD is OUTPUT = DISABLE_RF_SWITCH (HIGH); RF_SWITCH_VCTL is OUTPUT = EXTERNAL_ANTENNA (HIGH)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -60 |  1 |
+ 2 | netlan                 |  -65 |  6 |
+ 3 | netiot                 |  -66 |  6 |
+              Average  RSSI |  -63.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netlan                 |  -67 |  6 |
+ 3 | netiot                 |  -69 |  6 |
+              Average  RSSI |  -66.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -62 |  1 |
+ 2 | netlan                 |  -67 |  6 |
+ 3 | netiot                 |  -69 |  6 |
+              Average  RSSI |  -66.0
+
+Test #7
+RF_SWITCH_VDD is OUTPUT = ENABLE_RF_SWITCH (LOW); RF_SWITCH_VCTL I/O pin in INPUT mode
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netiot                 |  -43 |  6 |
+ 3 | netlan                 |  -44 |  6 |
+              Average  RSSI |  -42.3
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netiot                 |  -44 |  6 |
+ 3 | netlan                 |  -44 |  6 |
+              Average  RSSI |  -42.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netiot                 |  -44 |  6 |
+ 3 | netlan                 |  -44 |  6 |
+              Average  RSSI |  -42.7
+
+Test #8
+RF_SWITCH_VDD is OUTPUT = ENABLE_RF_SWITCH (LOW); RF_SWITCH_VCTL is OUTPUT = INTERNAL_ANTENNA (LOW)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -41 |  1 |
+ 2 | netlan                 |  -44 |  6 |
+ 3 | netiot                 |  -47 |  6 |
+              Average  RSSI |  -44.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -40 |  1 |
+ 2 | netlan                 |  -44 |  6 |
+ 3 | netiot                 |  -45 |  6 |
+              Average  RSSI |  -43.0
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -39 |  1 |
+ 2 | netiot                 |  -44 |  6 |
+ 3 | netlan                 |  -45 |  6 |
+              Average  RSSI |  -42.7
+
+Test #9
+RF_SWITCH_VDD is OUTPUT = ENABLE_RF_SWITCH (LOW); RF_SWITCH_VCTL is OUTPUT = EXTERNAL_ANTENNA (HIGH)
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | netiot                 |  -66 |  6 |
+ 2 | SIGMDELNET             |  -68 |  1 |
+ 3 | netlan                 |  -69 |  6 |
+              Average  RSSI |  -67.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | netiot                 |  -66 |  6 |
+ 2 | SIGMDELNET             |  -67 |  1 |
+ 3 | netlan                 |  -67 |  6 |
+              Average  RSSI |  -66.7
+
+Scan start
+Scan done
+3 networks found
+Nr | SSID                   | RSSI | CH |
+ 1 | SIGMDELNET             |  -66 |  1 |
+ 2 | netlan                 |  -66 |  6 |
+ 3 | netiot                 |  -68 |  6 |
+              Average  RSSI |  -66.7
+
+
+Test suite completed.
+Will restart in 5 minutes
