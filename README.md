@@ -60,13 +60,17 @@ NB:
 
 Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
 
-The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It was necessary to use an external antenna to achieve the pairing, but it may not be the case in another situation.
+The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. 
+
+With the August 6, 2024 correction that enables the RF switch and properly selects an antenna, it is no longer necessary to reduce the link quality threshold in the Zigbee_Light_Bulb sketch. Nevertheless, the LQI_THRESHOLD macro remains in the code.
 
 ### Further Details:
 
 See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs.
 
 ## Change Log
+
+2024-08-06: Fixed RF switch enable and antenna selection for ESP32 Arduino 3.0.2 and up
 
 2024-08-05: Investigation of I/O ports controlling the antenna RF switch
 
