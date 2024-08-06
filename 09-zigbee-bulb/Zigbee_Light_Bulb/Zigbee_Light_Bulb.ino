@@ -26,12 +26,15 @@
  *---------------------------------------------------------------------------------------
  *
  * Modified to work with the XIAO ESP32C6 
- *   - added ANTENNA_PIN if using external antenna 
+ *   - added USE_EXTERNAL_ANTENNA macro if using external antenna 
  *   - added LQI_THRESHOLD macro if required
  *   - uses single yellow builtin LED instead of RGB LED
  *
  * Michel Deslierres
  * July 7, 2024
+ *
+ * Corrected antenna switching compatible with ESP32 3.0.2 and up 
+ * August 6, 2024
  */
 
 #ifndef ZIGBEE_MODE_ED
@@ -47,15 +50,15 @@
 #if defined(ARDUINO_XIAO_ESP32C6)
 // An onboard ceramic antenna is used by default, but an external antenna can be used instead
 // in which case uncomment the following macro definition.
-//#define ANTENNA_PIN 14
+//#define USE_EXTERNAL_ANTENNA
 #endif
 
 // If a connection cannot be made resulting in 
 //   Network steering was not successful (status: ESP_FAIL) 
-// errors, try lowering the reducing the minimum LQI value for 
+// errors, try lowering the minimum LQI value for 
 // network joining as per xiequnan 
 // @ https://github.com/espressif/esp-zigbee-sdk/issues/363#issuecomment-2160086939
-#define LQI_THRESHOLD 32
+//#define LQI_THRESHOLD 32
 
 // Use correct builtin LED
 #if defined(RGB_BUILTIN)
@@ -108,12 +111,6 @@ void esp_zb_app_signal_handler(esp_zb_app_signal_t *signal_struct) {
       esp_zb_bdb_start_top_level_commissioning(ESP_ZB_BDB_MODE_INITIALIZATION);
       break;
     case ESP_ZB_BDB_SIGNAL_DEVICE_FIRST_START:
-  esp_zb_enable_joining_to_distributed
-  
-  ing_ to_distributed(true); // not declared in scope
-  uint8_t secret_zll_trust_center_key[] = { 0x9F, 0x55, 0x95, 0xF1, 0x02, 0x57, 0xC8, 0xA4, 0x69, 0xCB, 0xF4, 0x2B, 0xC9, 0x3F, 0xEE, 0x31 };
-  esp_zb_secur_TC_standard_distributed_key_set(secret_zll_trust_center_key);
-
     case ESP_ZB_BDB_SIGNAL_DEVICE_REBOOT:
       if (err_status == ESP_OK) {
         log_i("Device started up in %s factory-reset mode", esp_zb_bdb_is_factory_new() ? "" : "non");
@@ -153,12 +150,6 @@ static esp_err_t zb_action_handler(esp_zb_core_action_callback_id_t callback_id,
     default:                               log_w("Receive Zigbee action(0x%x) callback", callback_id); break;
   }
   return ret;
-  esp_zb_enable_joining_to_distributed
-  
-  ing_ to_distributed(true); // not declared in scope
-  uint8_t secret_zll_trust_center_key[] = { 0x9F, 0x55, 0x95, 0xF1, 0x02, 0x57, 0xC8, 0xA4, 0x69, 0xCB, 0xF4, 0x2B, 0xC9, 0x3F, 0xEE, 0x31 };
-  esp_zb_secur_TC_standard_distributed_key_set(secret_zll_trust_center_key);
-
 }
 
 static void esp_zb_task(void *pvParameters) {
@@ -215,10 +206,22 @@ static esp_err_t zb_attribute_handler(const esp_zb_zcl_set_attr_value_message_t 
 
 /********************* Arduino functions **************************/
 void setup() {
-  // Init I/O pin for external antenna if ANTENNA_PIN is defined
-  #if defined(ANTENNA_PIN)
-  pinMode(ANTENNA_PIN, OUTPUT);
-  digitalWrite(ANTENNA_PIN, HIGH); 
+
+  #if defined(ARDUINO_XIAO_ESP32C6)  
+    if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+        uint8_t WIFI_ENABLE = 3;
+        uint8_t WIFI_ANT_CONFIG = 14;
+        // enable the RF switch, this is done in initVariant in core 3.0.4 and up
+        pinMode(WIFI_ENABLE, OUTPUT);
+        digitalWrite(WIFI_ENABLE, LOW);
+        // prepare for selecting antenna
+        pinMode(WIFI_ANT_CONFIG, OUTPUT);
+    }  
+    #if defined(USE_EXTERNAL_ANTENNA)
+      digitalWrite(WIFI_ANT_CONFIG, HIGH);
+    #else
+      digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
+    #endif
   #endif
   
   // Init Zigbee

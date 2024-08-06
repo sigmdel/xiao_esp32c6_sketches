@@ -27,10 +27,13 @@
  *---------------------------------------------------------------------------------------
  *
  * Modified to work with the XIAO ESP32C6 
- *   - added ANTENNA_PIN macro if using an external antenna 
+ *   - added USE_EXTERNAL_ANTENNA macro if using external antenna 
  *
  * Michel Deslierres
  * July 7, 2024
+ *
+ * Corrected antenna switching compatible with ESP32 3.0.2 and up 
+ * August 6, 2024
  */
 
 #ifndef ZIGBEE_MODE_ZCZR
@@ -46,7 +49,7 @@
 #if defined(ARDUINO_XIAO_ESP32C6)
 // An onboard ceramic antenna is used by default, but an external antenna can be used instead
 // in which case uncomment the following macro definition.
-//#define ANTENNA_PIN 14
+//#define USE_EXTERNAL_ANTENNA
 #endif
 
 /* Switch configuration */
@@ -252,10 +255,22 @@ static void switch_gpios_intr_enabled(bool enabled) {
 
 /********************* Arduino functions **************************/
 void setup() {
-  // Init I/O pin for external antenna if ANTENNA_PIN is defined  
-  #if defined(ANTENNA_PIN)
-  pinMode(ANTENNA_PIN, OUTPUT);
-  digitalWrite(ANTENNA_PIN, HIGH); 
+
+  #if defined(ARDUINO_XIAO_ESP32C6)  
+    if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+        uint8_t WIFI_ENABLE = 3;
+        uint8_t WIFI_ANT_CONFIG = 14;
+        // enable the RF switch, this is done in initVariant in core 3.0.4 and up
+        pinMode(WIFI_ENABLE, OUTPUT);
+        digitalWrite(WIFI_ENABLE, LOW);
+        // prepare for selecting antenna
+        pinMode(WIFI_ANT_CONFIG, OUTPUT);
+    }  
+    #if defined(USE_EXTERNAL_ANTENNA)
+      digitalWrite(WIFI_ANT_CONFIG, HIGH);
+    #else
+      digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
+    #endif
   #endif
   
   // Init Zigbee
