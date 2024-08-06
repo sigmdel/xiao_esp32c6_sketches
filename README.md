@@ -37,14 +37,15 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **01_pin_names** | 1,2 | Shows the content of `pins_arduino.h` |
 | **02_blink_pulse_led** | 2 | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
 | **03_scan_wifi** | 2,3 | [WiFiScan](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi/examples/WiFiScan) example from the esp32-arduino core |
-| **04_wifi_blackhole** | 4 | Look at Wi-Fi station connect times |
+| **04_wifi_blackhole** | 4 | Looks at Wi-Fi station connect times |
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
 | **08_zigbee_switch**| 6 | Modified [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
 | **09_zigbee_bulb**  | 6 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
-| **10_deep_sleep_io** | 7 | Deep sleep with wake up on I/O event |
+| **11_deep_sleep_io** | 7 | Deep sleep with wake up on I/O event |
+| **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
 
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
@@ -66,6 +67,10 @@ The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it
 See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs.
 
 ## Change Log
+
+2024-08-05: Investigation of I/O ports controlling the antenna RF switch
+
+2024-08-04: New pin definitions added in ESP32 Arduino 3.0.4
 
 2024-07-18: Add board pinout
 
