@@ -56,6 +56,8 @@ NB:
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
   7. Requires an external pull up resistor.
 
+>>The <code>wifi_tx_power</code> and <code>async_web_led</code> sketches do not yet handle the antenna correctly in version 3.0.2 and 3.0.3 of the ESP32 Arduino core. 
+
 ### About `08_zigbee_switch` and `09_zigbee_bulb`: 
 
 Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
