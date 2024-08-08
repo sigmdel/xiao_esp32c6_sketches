@@ -5,10 +5,12 @@
 #include <WiFi.h>
 #include "secrets.h"
 
-// Define the title macro 
-#define TITLE "Seeed XIAO ESP32C6"
-
-#define USE_EXTERNAL_ANTENNA
+#if defined(ARDUINO_XIAO_ESP32C6)
+  #define TITLE "Seeed XIAO ESP32C6"
+  #define USE_EXTERNAL_ANTENNA
+#else
+  #error "Unknown dev board"
+#endif  
 
 #define TIMEOUT 120000   // 2 minutes, time until connection deemed impossible
 
@@ -50,6 +52,8 @@ int truepower[powerCount] = {0};
 
 long ctimes[powerCount] = {0};
 
+int rssi[powerCount] = {0};
+
 void print_ctimes(void) {
   bool err = false;
   Serial.println("Connect time vs txPower\n");
@@ -62,10 +66,10 @@ void print_ctimes(void) {
   #endif
   Serial.println(" antenna.");
 
-  Serial.printf("%24s | %5s | %5s | %8s\n", "enum", "want", "set", "time (ms)");
-  Serial.printf("%26s %7s %7s\n", "|", "|", "|");
+  Serial.printf("%24s | %5s | %5s | %5s | %8s\n", "enum", "want", "set", "rssi", "time (ms)");
+  Serial.printf("%26s %7s %7s %7s\n", "|", "|", "|", "|");
   for (int i=0; i<powerCount; i++) {
-     Serial.printf("%24s | %5d | %5d | %8lu", powerstr[i], power[i], truepower[i], ctimes[i]);
+     Serial.printf("%24s | %5d | %5d | %5d | %8lu", powerstr[i], power[i], truepower[i], rssi[i], ctimes[i]);
      if (truepower[i] != power[i] ) {
       Serial.print(" *");
       err = true;
@@ -141,23 +145,30 @@ void getStatus(void) {
 
 void setup() {
     Serial.begin();
-    delay(2000);
-    
-    pinMode(14, OUTPUT);
-    Serial.print("\nUsing ");
-    #ifdef USE_EXTERNAL_ANTENNA
-       Serial.print("an external");
-      digitalWrite(14, HIGH);  
-    #else
-      Serial.print("the internal");
-      digitalWrite(14, LOW);  
-    #endif
-    Serial.println(" antenna.");
+    delay(2000); // allow 2 seconds for the USB CDC stack to come up 
 
+    #if defined(ARDUINO_XIAO_ESP32C6)  
+      // handle RF switch
+      if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+          uint8_t WIFI_ENABLE = 3;
+          uint8_t WIFI_ANT_CONFIG = 14;
+          // enable the RF switch, this is done in initVariant in core 3.0.4 and up
+          pinMode(WIFI_ENABLE, OUTPUT);
+          digitalWrite(WIFI_ENABLE, LOW);
+          // prepare for selecting antenna
+          pinMode(WIFI_ANT_CONFIG, OUTPUT);
+      }  
+      // and select the antenna
+      #if defined(USE_EXTERNAL_ANTENNA)
+        digitalWrite(WIFI_ANT_CONFIG, HIGH);
+      #else
+        digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
+      #endif
+    #endif
+ 
     WiFi.mode(WIFI_STA);
     delay(25);
     power[0] = WiFi.getTxPower();  // default tx power on boot
-    //print_ctimes();
     start_connecting(0);
 }
 
@@ -182,6 +193,8 @@ void loop() {
     Serial.println(WiFi.localIP());
     Serial.printf("Time to connect: %lu ms\n", etime);
     ctimes[txIndex] = etime;
+    rssi[txIndex] = WiFi.RSSI();
+    Serial.printf("RSSI: %d dBm\n", rssi[txIndex]);   
     delay(1000);
     txIndex++;
     if (txIndex >= powerCount) return;
