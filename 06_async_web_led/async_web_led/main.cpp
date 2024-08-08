@@ -11,7 +11,7 @@
 #if defined(BUILTIN_LED)
   static uint8_t ledPin = BUILTIN_LED;
   static uint8_t ledOn = LOW;
-#eiif defined(ARDUINO_XIAO_ESP32C3)
+#elif defined(ARDUINO_XIAO_ESP32C3)
   // Connect an external LED:
   //  The diode's cathode (-, usually the short lead on the flat side of the LED) is connected to GND.
   //  The diode's anode (+, usually the long lead on the round side of the LED) is connected to a
@@ -25,6 +25,7 @@
 
 #if defined(ARDUINO_XIAO_ESP32C6)
   #define TITLE "XIAO ESP32C6"
+  //#define USE_EXTERNAL_ANTENNA
 #elif defined(ARDUINO_XIAO_ESP32C3)
   #define TITLE "XIAO ESP32C3"
 #else
@@ -64,8 +65,27 @@ void setup() {
   // Set the digital pin connected to the LED as an output
   pinMode(ledPin, OUTPUT);
 
+  #if defined(ARDUINO_XIAO_ESP32C6)  
+    // handle RF switch
+    if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
+        uint8_t WIFI_ENABLE = 3;
+        uint8_t WIFI_ANT_CONFIG = 14;
+        // enable the RF switch, this is done in initVariant in core 3.0.4 and up
+        pinMode(WIFI_ENABLE, OUTPUT);
+        digitalWrite(WIFI_ENABLE, LOW);
+        // prepare for selecting antenna
+        pinMode(WIFI_ANT_CONFIG, OUTPUT);
+    }  
+    // and select the antenna
+    #if defined(USE_EXTERNAL_ANTENNA)
+      digitalWrite(WIFI_ANT_CONFIG, HIGH);
+    #else
+      digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
+    #endif
+  #endif
+
   Serial.begin();
-  delay(1000);      // 1 second delay should be sufficient
+  delay(2000);      // 2 second delay should be sufficient
 
   setLed(0);
 
