@@ -6,8 +6,10 @@
 #include "secrets.h"
 
 #if defined(ARDUINO_XIAO_ESP32C6)
+  // The onboard ceramic antenna is used by default.
+  // Uncomment the following macro to use a connected external antenna.
+  //#define USE_EXTERNAL_ANTENNA
   #define TITLE "Seeed XIAO ESP32C6"
-  #define USE_EXTERNAL_ANTENNA
 #else
   #error "Unknown dev board"
 #endif  
@@ -147,23 +149,31 @@ void setup() {
     Serial.begin();
     delay(2000); // allow 2 seconds for the USB CDC stack to come up 
 
-    #if defined(ARDUINO_XIAO_ESP32C6)  
-      // handle RF switch
-      if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
-          uint8_t WIFI_ENABLE = 3;
-          uint8_t WIFI_ANT_CONFIG = 14;
-          // enable the RF switch, this is done in initVariant in core 3.0.4 and up
-          pinMode(WIFI_ENABLE, OUTPUT);
-          digitalWrite(WIFI_ENABLE, LOW);
-          // prepare for selecting antenna
-          pinMode(WIFI_ANT_CONFIG, OUTPUT);
-      }  
-      // and select the antenna
+    #if defined(ARDUINO_XIAO_ESP32C6)
+      #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
+	// reproduce initVariant() from ESP32 v3.0.4
+	uint8_t WIFI_ENABLE = 3;
+	uint8_t WIFI_ANT_CONFIG = 14;
+	// enable the RF switch
+	pinMode(WIFI_ENABLE, OUTPUT);
+	digitalWrite(WIFI_ENABLE, LOW);
+	// select the internal antenna
+	pinMode(WIFI_ANT_CONFIG, OUTPUT);
+	digitalWrite(WIFI_ANT_CONFIG, LOW);
+      #endif
+    
+      // same code for ESP32 v3.0.2 and up
       #if defined(USE_EXTERNAL_ANTENNA)
         digitalWrite(WIFI_ANT_CONFIG, HIGH);
-      #else
-        digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
       #endif
+
+      Serial.print("Using ");
+      #ifdef USE_EXTERNAL_ANTENNA
+        Serial.print("an external");
+      #else
+        Serial.print("the internal");
+      #endif
+      Serial.println(" antenna.");
     #endif
  
     WiFi.mode(WIFI_STA);

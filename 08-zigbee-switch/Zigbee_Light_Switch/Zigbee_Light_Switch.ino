@@ -47,10 +47,12 @@
 #include "ha/esp_zigbee_ha_standard.h"
 
 #if defined(ARDUINO_XIAO_ESP32C6)
-// An onboard ceramic antenna is used by default, but an external antenna can be used instead
-// in which case uncomment the following macro definition.
-//#define USE_EXTERNAL_ANTENNA
-#endif
+  // The onboard ceramic antenna is used by default.
+  // Uncomment the following macro to use a connected external antenna.
+  //#define USE_EXTERNAL_ANTENNA
+#else
+  #undef USE_EXTERNAL_ANTENNA
+#endif    
 
 /* Switch configuration */
 #define GPIO_INPUT_IO_TOGGLE_SWITCH GPIO_NUM_9        //md Boot button
@@ -256,23 +258,25 @@ static void switch_gpios_intr_enabled(bool enabled) {
 /********************* Arduino functions **************************/
 void setup() {
 
-  #if defined(ARDUINO_XIAO_ESP32C6)  
-    if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
-        uint8_t WIFI_ENABLE = 3;
-        uint8_t WIFI_ANT_CONFIG = 14;
-        // enable the RF switch, this is done in initVariant in core 3.0.4 and up
-        pinMode(WIFI_ENABLE, OUTPUT);
-        digitalWrite(WIFI_ENABLE, LOW);
-        // prepare for selecting antenna
-        pinMode(WIFI_ANT_CONFIG, OUTPUT);
-    }  
+  #if defined(ARDUINO_XIAO_ESP32C6)
+    #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
+      // reproduce initVariant() from ESP32 v3.0.4
+      uint8_t WIFI_ENABLE = 3;
+      uint8_t WIFI_ANT_CONFIG = 14;
+      // enable the RF switch
+      pinMode(WIFI_ENABLE, OUTPUT);
+      digitalWrite(WIFI_ENABLE, LOW);
+      // select the internal antenna
+      pinMode(WIFI_ANT_CONFIG, OUTPUT);
+      digitalWrite(WIFI_ANT_CONFIG, LOW);
+    #endif
+   
+    // same code for ESP32 v3.0.2 and up
     #if defined(USE_EXTERNAL_ANTENNA)
       digitalWrite(WIFI_ANT_CONFIG, HIGH);
-    #else
-      digitalWrite(WIFI_ANT_CONFIG, LOW); // default in core 3.0.4 and up
     #endif
   #endif
-  
+
   // Init Zigbee
   esp_zb_platform_config_t config = {
     .radio_config = ESP_ZB_DEFAULT_RADIO_CONFIG(),
