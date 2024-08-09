@@ -16,8 +16,8 @@
   // To test with the RF switch disabled 
   //#define DISABLE_RF_SWITCH  
 #else
- #undef USE_EXTERNAL_ANTENNA // just making sure
- #undef DISABLE_RF_SWITCH // just making sure
+  #undef USE_EXTERNAL_ANTENNA // just making sure
+  #undef DISABLE_RF_SWITCH // just making sure
 #endif 
 
 void setup() {
