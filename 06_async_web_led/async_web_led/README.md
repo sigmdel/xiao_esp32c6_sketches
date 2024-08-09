@@ -1,11 +1,10 @@
 # Additional Libraries
 
-## 06_async_web_led
+The `async_web_led` sketch is dependent on two libraries
 
-The `async_web_led` sketch is dependant on two libraries
+  1. [AsyncTCP](https://github.com/me-no-dev/AsyncTCP)
+  2. [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
 
-  1. AsyncTCP
-  2. ESPAsyncWebServer
+Minimalist copies of the libraries are included in the [../../libraries](../../libraries/README.md) directory. **Please do not redistribute these files and always return to the original source when using the libraries in other projects.**
 
-The [README](../../libraries/README.md) has details on how to obtain versions of these
-libraries that are compatible with sketch and the ESP32 Arduino core (v3.0.2).
+Each of the libraries is released under the LGPL-3.0 licence. Its terms can be found in `libraries/AsyncTCP/LICENSE`.

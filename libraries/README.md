@@ -21,3 +21,5 @@ It is still necessary to configure the Arduino IDE so that it can find the libra
   4. Click on the `OK` button.
 
 The Arduino IDE will automatically include any libraries found in the `libraries`. Be warned that it will want to install "updates" of these two libraries. Many of the offerings proposed by the IDE did not work, but the situation may have evolved since they were tried. It may be wise to forego updating when first testing the `async_web_led` sketch.
+
+Each of the libraries is released under the LGPL-3.0 licence. Its terms can be found in `libraries/AsyncTCP/LICENSE`.

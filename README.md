@@ -56,7 +56,6 @@ NB:
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
   7. Requires an external pull up resistor.
 
->>The <code>wifi_tx_power</code> and <code>async_web_led</code> sketches do not yet handle the antenna correctly in version 3.0.2 and 3.0.3 of the ESP32 Arduino core. 
 
 ### About `08_zigbee_switch` and `09_zigbee_bulb`: 
 
@@ -72,33 +71,23 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## Change Log
 
-2024-08-06: Fixed RF switch enable and antenna selection for ESP32 Arduino 3.0.2 and up
-
-2024-08-05: Investigation of I/O ports controlling the antenna RF switch
-
-2024-08-04: New pin definitions added in ESP32 Arduino 3.0.4
-
-2024-07-18: Add board pinout
-
-2024-07-09: Included use of the Serial peripheral in deep sleep examples
-
-2024-07-08: Added deep sleep examples
-
-2024-07-07: Added support for an external antenna (for XIAO ESP32C6) in Zigbee examples 
-
-2024-07-01: Set LQI threshold only when LQI_THRESHOLD macro is defined in the  Zigbee Bulb example
-
-2024-06-29: Improved ble_led
-
-2024-06-28: Added ble_led sketch based on BLE libraries
-
-2024-06-27: Added async web led sketch and `libraries` directory
-
-2024-06-26: Added Zigbee Light Switch and Bulb sketches
-
-2024-06-25: Updated after version 3.0.2 of `esp32` core released 
-
-2024-06-24: Initial version
+| Date |     |
+| ---  |  ---  |
+| 2024-08-09 | Corrected and completed RF switch and and antenna selection fix.  Made the project self-contained by adding private copies of required libraries. |
+| 2024-08-06 | Fixed RF switch enable and antenna selection for ESP32 Arduino 3.0.2 and up|
+| 2024-08-05 | Investigation of I/O ports controlling the antenna RF switch|
+| 2024-08-04 | New pin definitions added in ESP32 Arduino 3.0.4|
+| 2024-07-18 | Add board pinout|
+| 2024-07-09 | Included use of the Serial peripheral in deep sleep examples|
+| 2024-07-08 | Added deep sleep examples|
+| 2024-07-07 | Added support for an external antenna (for XIAO ESP32C6) in Zigbee examples |
+| 2024-07-01 | Set LQI threshold only when LQI_THRESHOLD macro is defined in the  Zigbee Bulb example|
+| 2024-06-29 | Improved ble_led|
+| 2024-06-28 | Added ble_led sketch based on BLE libraries|
+| 2024-06-27 | Added async web led sketch and `libraries` directory|
+| 2024-06-26 | Added Zigbee Light Switch and Bulb sketches|
+| 2024-06-25 | Updated after version 3.0.2 of `esp32` core released |
+| 2024-06-24 | Initial version |
 
 ## License
 
