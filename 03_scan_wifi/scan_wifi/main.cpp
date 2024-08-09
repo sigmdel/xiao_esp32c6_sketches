@@ -9,8 +9,16 @@
 #include <Arduino.h>
 #include "WiFi.h"
 
-//#define ENABLE_RF_SWITCH  
-//#define USE_EXTERNAL_ANTENNA
+#if defined(ARDUINO_XIAO_ESP32C6)
+  // The onboard ceramic antenna is used by default.
+  // Uncomment the following macro to use a connected external antenna.
+  // #define USE_EXTERNAL_ANTENNA
+  // To test with the RF switch disabled 
+  //#define DISABLE_RF_SWITCH  
+#else
+ #undef USE_EXTERNAL_ANTENNA // just making sure
+ #undef DISABLE_RF_SWITCH // just making sure
+#endif 
 
 void setup() {
   Serial.begin();
@@ -19,42 +27,44 @@ void setup() {
   WiFi.disconnect();
   delay(2000);
 
-  // Take care of RF switch according to the two macros defined above and 
-  // the version of the ESP32 Arduino core being used.
-  if (ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
-    // In ESP32 3.0.4+ the initVarian() function enables the RF switch 
-    // and selects the internal antenna
-    #ifndef ENABLE_RF_SWITCH
-    digitalWrite(WIFI_ENABLE, HIGH); // disable the switch
+  #if defined(ARDUINO_XIAO_ESP32C6)
+    #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
+        // reproduce initVariant() from ESP32 v3.0.4
+        uint8_t WIFI_ENABLE = 3;
+        uint8_t WIFI_ANT_CONFIG = 14;
+        // enable the RF switch
+        pinMode(WIFI_ENABLE, OUTPUT);
+        digitalWrite(WIFI_ENABLE, LOW);
+        // select the internal antenna
+        pinMode(WIFI_ANT_CONFIG, OUTPUT);
+        digitalWrite(WIFI_ANT_CONFIG, LOW);
     #endif
-    #ifdef USE_EXTERNAL_ANTENNA
-    digitalWrite(WIFI_ANT_CONFIG, HIGH); // select the external antenna
+    
+    // same code for ESP32 v3.0.2 and up
+    #if defined(DISABLE_RF_SWITCH)
+      digitalWrite(WIFI_ENABLE, HIGH);
+      pinMode(WIFI_ENABLE, INPUT);
     #endif
-   } else {
-    // no initVariant() in older ESP32 cores
-    #ifdef ENABLE_RF_SWITCH
-    pinMode(3, OUTPUT);
-    digitalWrite(3, LOW);
+    #if defined(USE_EXTERNAL_ANTENNA)
+      digitalWrite(WIFI_ANT_CONFIG, HIGH);
     #endif
-    #ifdef USE_EXTERNAL_ANTENNA
-    pinMode(14, OUTPUT);
-    digitalWrite(14, HIGH);
-    #endif
-  }
 
-  Serial.print("The RF switch is ");
-  #ifndef ENABLE_RF_SWITCH  
-  Serial.println("not ");
-  #endif
-  Serial.println("enabled.");
+    Serial.print("The RF switch is ");
+    #ifdef DISABLE_RF_SWITCH  
+    Serial.print("not ");
+    #endif
+    Serial.println("enabled.");
 
-  Serial.print("Using ");
-  #ifdef USE_EXTERNAL_ANTENNA
-    Serial.print("an external");
-  #else
-    Serial.print("the internal");
+    Serial.print("Using ");
+    #ifdef USE_EXTERNAL_ANTENNA
+      Serial.print("an external");
+    #else
+      Serial.print("the internal");
+    #endif
+    Serial.println(" antenna.");
   #endif
-  Serial.println(" antenna.\nSetup done");
+
+  Serial.println("Setup done");
 }
 
 void loop() {
