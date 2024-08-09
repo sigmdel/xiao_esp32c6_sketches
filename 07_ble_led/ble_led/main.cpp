@@ -37,6 +37,14 @@
   #error "ledPin not defined"
 #endif
 
+#if defined(ARDUINO_XIAO_ESP32C6)
+  // The onboard ceramic antenna is used by default.
+  // Uncomment the following macro to use a connected external antenna.
+  //#define USE_EXTERNAL_ANTENNA
+#else
+  #undef USE_EXTERNAL_ANTENNA
+#endif    
+
 BLEServer *pServer = nullptr;
 BLECharacteristic *pCharacteristic = nullptr;
 
@@ -75,13 +83,40 @@ class WriteCallbacks : public BLECharacteristicCallbacks {
 void setup() {
   #if defined(ARDUINO_ESP32C6)
   Serial.begin();
-  delay(1000); // should be enough for the USB CDC to initialize
+  delay(2000); // should be enough for the USB CDC to initialize
   #else
   Serial.begin(115200);
   while (!Serial) delay(10);
   #endif
 
-  Serial.println("Setup");
+  Serial.println("\nSetup:");
+
+  #if defined(ARDUINO_XIAO_ESP32C6)
+    #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
+      // reproduce initVariant() from ESP32 v3.0.4
+      uint8_t WIFI_ENABLE = 3;
+      uint8_t WIFI_ANT_CONFIG = 14;
+      // enable the RF switch
+      pinMode(WIFI_ENABLE, OUTPUT);
+      digitalWrite(WIFI_ENABLE, LOW);
+      // select the internal antenna
+      pinMode(WIFI_ANT_CONFIG, OUTPUT);
+      digitalWrite(WIFI_ANT_CONFIG, LOW);
+    #endif
+   
+    // same code for ESP32 v3.0.2 and up
+    #if defined(USE_EXTERNAL_ANTENNA)
+      digitalWrite(WIFI_ANT_CONFIG, HIGH);
+    #endif
+
+    Serial.print("Using ");
+    #ifdef USE_EXTERNAL_ANTENNA
+      Serial.print("an external");
+    #else
+      Serial.print("the internal");
+    #endif
+    Serial.println(" antenna.");
+  #endif
 
   Serial.println("Initializing LED");
   pinMode(ledPin, OUTPUT);
@@ -114,17 +149,22 @@ void setup() {
   Serial.println("Start BLE advertising");
   BLEDevice::startAdvertising();
 
-  Serial.print("\nSetup completed, connect to ");
-  Serial.println(BLUETOOTH_NAME);
-  Serial.print("Address: ");
-  Serial.println(BLEDevice::getAddress().toString().c_str());
+  Serial.println("\nSetup completed");
 }
 
 unsigned long timer = 0;
 
 void loop() {
-  if (millis() - timer > 5000) {
-    Serial.println(" - loop busy work");
+  if (millis() - timer > 10000) {
+    if (deviceConnected) {
+      Serial.println("Send 'on' or 'off' string to control the LED");
+    } else {
+      Serial.print("Connect to ");
+      Serial.print(BLUETOOTH_NAME);
+      Serial.print(" (address: ");
+      Serial.print(BLEDevice::getAddress().toString().c_str());
+      Serial.println(")");
+    }  
     timer = millis();
   }
 }  
