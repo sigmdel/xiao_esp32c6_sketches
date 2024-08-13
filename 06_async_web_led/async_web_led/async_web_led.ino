@@ -11,11 +11,11 @@
  *     in the Additional Boards Manager URLS in the Preferences window.
  *  2- Install platform esp32 by Espressif version 3.0.2 or newer with the Boards Manager
  *  3- Select the XIAO_ESP32C6 board
- *  4- Install the blackhack forks of the AsyncTCP and ESPAsyncWebServer libraries. Details
-       in librairies/README.md.
+ *  4- Make sure that the AsyncTCP and ESPAsyncWebServer libraries are in the
+       ../../libraries directory. Details in librairies/README.md.
 
  * Michel Deslierres
- * June 27, 2024
+ * August 9, 2024
  *
  *
  * Copyright 2024, Michel Deslierres. No rights reserved, this code is in the public domain.
