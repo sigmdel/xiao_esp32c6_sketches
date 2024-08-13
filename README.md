@@ -46,6 +46,7 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
 | **11_deep_sleep_io** | 7 | Deep sleep with wake up on I/O event |
 | **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
+| **13_wifi_uptime** | 5 | Comparing Wi-Fi connectivity across boards|
 
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
@@ -73,7 +74,9 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date |     |
 | ---  |  ---  |
-| 2024-08-09 | Corrected and completed RF switch and and antenna selection fix.  Made the project self-contained by adding private copies of required libraries. |
+| 2024-08-12 | Added Wi-Fi uptime test |
+| 2024-08-09 | Corrected and completed RF switch and antenna selection fix |
+| 2024-08-09 | Made the project self-contained by adding private copies of required libraries. |
 | 2024-08-06 | Fixed RF switch enable and antenna selection for ESP32 Arduino 3.0.2 and up|
 | 2024-08-05 | Investigation of I/O ports controlling the antenna RF switch|
 | 2024-08-04 | New pin definitions added in ESP32 Arduino 3.0.4|
