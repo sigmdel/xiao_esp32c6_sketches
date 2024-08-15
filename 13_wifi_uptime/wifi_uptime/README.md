@@ -9,21 +9,15 @@ The first two are based on the ESP32-C3 microcontroller while the third contains
 
 # Preliminary Results
 
-The three boards were placed side by side as far as practical from a Wi-Fi access point while still within the house. The distance between the AP and the boards was about 16 metres with two walls between the devices. After 305 minutes Wi-Fi connection time, the received signal strength indicator values were somewhat surprising.
+The three boards were placed side by side as far as practical from a Wi-Fi access point while still within the house. The distance between the AP and the boards was about 16 metres with two walls between the devices. The received signal strength indicator values were transcribed into the following table at four different times over almost 3 days.
 
-| Board | RSSI |
-| ---   | ---  |
-| XIAO ESP32C3 | -63 |
-| Super Mini C3 | -83 |
-| XIAO ESP32C6 | -88 |
+| Board | 305 min |  1172 min | 4050 min | 4237 min | 
+| ---   |:---: | :---: |  :---: |  :---: |
+| XIAO ESP32C3 | -63 | -75 | -71 | -67 |
+| Super Mini C3 | -83 | -78 | n.c. | -83 |
+| XIAO ESP32C6 | -88 | -74 | -81 | -89 |
  
-Later, after 1172 minutes of uptime, the range of RSSI values had diminished.
-
-| Board | RSSI |
-| ---   | ---  |
-| XIAO ESP32C3 | -75 |
-| Super Mini C3 | -78 |
-| XIAO ESP32C6 | -74 |
+Here n.c. indicates that the Super Mini was not connected. Not only could the web page not be reached, but the device was not even listed among the Wi-Fi clients by the router. Nevertheless, the board reestablished the connection. 
 
 After almost a day of operation, the devices were remarkably cool. 
 
@@ -35,15 +29,7 @@ After almost a day of operation, the devices were remarkably cool.
 
 This is basically ambient temperature.
 
-The test was terminated after 4050 minutes (more than 2 days and 19 hours).
-
-| Board | RSSI |
-| ---   | ---  |
-| XIAO ESP32C3 | -71 |
-| Super Mini C3 | not connected |
-| XIAO ESP32C6 | -81 |
-
-Unfortunately, it was not possible to ascertain when the Super Mini disconnected. The test has to be rewritten to better stress the Wi-Fi radios and with data logging for unattended operation.
+Clearly, the test has to be rewritten to better stress the Wi-Fi radios and with data logging for unattended operation.
 
 # Additional Libraries
 
