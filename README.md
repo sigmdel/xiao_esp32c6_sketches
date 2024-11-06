@@ -11,10 +11,20 @@ The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminut
 
 The current Espressif 32 [platform (version 6.7.0 dated May 14, 2024)](https://github.com/platformio/platform-espressif32/releases) in PlatformIO (PIO) is based on version 2.0.16 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6 (see [Add board support for Seeed XIAO ESP32C6](https://github.com/platformio/platform-espressif32/pull/1380#issuecomment-2205808510)). For that reason, these sketches cannot be compiled in PIO. Nevertheless the directory structure and file names are such that it will be easy to include PlatformIO when it takes on version 3.0 of the ESP32 Arduino core.
 
+**There is now another ESP32 development platform: [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32).**  The stable version supports
+espressif Arduino 3.0.7 and IDF 5.1.4+ 
+
+```
+[env:stable]
+platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip
+board = ...
+...
+```
 
 ## Arduino IDE Notes
 
 The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino.
+
 
 Install the latest Espressif ESP32 Arduino core.
 
