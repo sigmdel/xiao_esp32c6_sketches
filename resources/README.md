@@ -19,4 +19,4 @@ The above will work, in the sense that the new board will show up in the Project
 
 There is a simple way to add a locally defined custom board definition to a project. See [Custom Embedded Boards](https://docs.platformio.org/en/latest/platforms/creating_board.html#installation) and [boards_dir](https://docs.platformio.org/en/latest/projectconf/sections/platformio/options/directory/boards_dir.html#projectconf-pio-boards-dir). 
 
-Hopefully, a future release of the `espressif32` platform will include a correct board definition and the problem will become moot.
+Hopefully, a future release of the `espressif32` platform will include a correct board definition and the problem will become moot. In the meantime, this definition [has been proposed](https://github.com/pioarduino/platform-espressif32/pull/46).

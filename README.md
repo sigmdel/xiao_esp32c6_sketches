@@ -84,6 +84,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date |     |
 | ---  |  ---  |
+| 2024-11-06 | PlatformIO support |
 | 2024-08-12 | Added Wi-Fi uptime test |
 | 2024-08-09 | Corrected and completed RF switch and antenna selection fix |
 | 2024-08-09 | Made the project self-contained by adding private copies of required libraries. |
