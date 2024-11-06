@@ -101,13 +101,18 @@ void setup() {
     // do nothing
   };
   itime = millis() - connect_time;
-  Serial.print("\nWiFi is connected with IP address: ");
-  Serial.println(WiFi.localIP());
-  Serial.printf("Time to connect: %lu ms\n", etime);
-  Serial.printf("Time to valid IP local address: %lu ms\n", itime);
-  Serial.printf("Difference: %lu ms\n", itime - etime);
+
 }
 
+unsigned long report = 0;
+
 void loop() {
-  // do nothing
+  if (millis() - report > 25000) {
+    Serial.print("\nWiFi is connected with IP address: ");
+    Serial.println(WiFi.localIP());
+    Serial.printf("Time to connect: %lu ms\n", etime);
+    Serial.printf("Time to valid IP local address: %lu ms\n", itime);
+    Serial.printf("Difference: %lu ms\n", itime - etime);
+    report = millis();
+  }  
 }
