@@ -70,7 +70,7 @@ void setup() {
   pinMode(ledPin, OUTPUT);
 
   Serial.begin();
-  delay(2000);      // 2 second delay should be sufficient
+  delay(3000);      // 3 second delay should be sufficient
 
   #if defined(ARDUINO_XIAO_ESP32C6)
     #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
