@@ -9,22 +9,23 @@ The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminut
 
 ## PlatformIO Notes
 
-The current Espressif 32 [platform (version 6.7.0 dated May 14, 2024)](https://github.com/platformio/platform-espressif32/releases) in PlatformIO (PIO) is based on version 2.0.16 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6 (see [Add board support for Seeed XIAO ESP32C6](https://github.com/platformio/platform-espressif32/pull/1380#issuecomment-2205808510)). For that reason, these sketches cannot be compiled in PIO. Nevertheless the directory structure and file names are such that it will be easy to include PlatformIO when it takes on version 3.0 of the ESP32 Arduino core.
+The current Espressif 32 [platform (version 6.9.0 dated Sept 26, 2024)](https://github.com/platformio/platform-espressif32/releases) in PlatformIO (PIO) is based on version 2.0.17 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6 (see [Add board support for Seeed XIAO ESP32C6](https://github.com/platformio/platform-espressif32/pull/1380#issuecomment-2205808510)). 
 
-**There is now another ESP32 development platform: [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32).**  The stable version supports
-espressif Arduino 3.0.7 and IDF 5.1.4+ 
+However, a *fork was created due to the lack of ongoing development for the Espressif 32 Arduino Core for PlatformIO*. Using [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32) and a *homebrew* [board definition file](resources/README.md), it is possible to compile all the projects.
 
+Because of the Arduino sketch naming constraints, the `main.cpp` file of a project is not stored in the default `src` directory. A `src_dir` entry in the `platformio.ini` configuration file provides the name of the directory in which `main.cpp` is found. That will be the name of the Arduino sketch as shown below for the 01_pin_names project.
+
+```ini
+[platformio]
+; Make the Arduino IDE happysupermini_esp32c3_sketches (github)%  (.INO file must be in a directory of the same name)
+src_dir = pin_names
 ```
-[env:stable]
-platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip
-board = ...
-...
-```
+
+PlatformIO will "convert" the `pin_names.ino` sketch file, but that is of no consequence since it contains only comments.
 
 ## Arduino IDE Notes
 
-The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino.
-
+The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino. 
 
 Install the latest Espressif ESP32 Arduino core.
 
@@ -33,7 +34,6 @@ Install the latest Espressif ESP32 Arduino core.
  1.  Install platform `esp32` by Espressif version 3.0.2 or newer with the Boards Manager
 
 Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project.
-
 
 Arduino sketches must have an `.ino` file name extension and must be contained in a directory that has the same name as the Arduino sketch (excluding the extension). Consequently the `01_pin_names` project contains a directory named `pin_names` that in turn contains the Arduino sketch `pin_names.ino`. That sketch is basically empty as it is a long comment only. This is not a problem because the Arduino IDE will import all source files found in the sketch directory. The actual code is in `main.cpp` which is the default name of a PlatformIO project.
 
@@ -61,8 +61,8 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
   2. Similar to sketch in [supermini_esp32c3_sketches](https://github.com/sigmdel/supermini_esp32c3_sketches)
-  3.  Released under the GNU LESSER GENERAL PUBLIC LICENSE.
-  4.  Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
+  3. Released under the GNU LESSER GENERAL PUBLIC LICENSE.
+  4. Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
   5. Need to install two libraries. The details are in [libraries/README.md](libraries/README.md).
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
   7. Requires an external pull up resistor.
