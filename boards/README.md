@@ -1,22 +1,34 @@
 # Adding a Seeed XIAO ESP32C6 Board Definition in PlatformIO 
 
-Currently there is no Seeed XIAO ESP32C6 board definition in the `espressif32/boards` directory. This directory contains a proposed definition `seeed_xiao_esp32c6.json` that can copied to the correct subdirectory of the `platformio` directory. The location of the latter depends on the operating system and where PlatformIO was initially installed. The *default* locations are as follows.
+The stable (51.03.07) branch of the [pioarduino](https://github.com/pioarduino/platform-espressif32) platform does not contain a board definition for the XIAO ESP32C6. However, this directory contains a proposed definition `seeed_xiao_esp32c6.json` which has been successfully tested with all the projects in the repository.
 
-Linux: 
-  `~/.platformio/platforms/espressif32/boards/seeed_xiao_esp32c6.json`
+To use the [boards/seeed_xiao_esp32c6.json](seeed_xiao_esp32c6.json) definition in a PlatformIO project, add the following line in the project configuration file (`platformio.ini`): `boards_dir = ../boards`. Here is a typical example.
 
-In practice this means: `home/<user>/.platformio/...`.
+```ini
+platformio]
+src_dir = async_web_led
+boards_dir = ../boards
 
-Windows:
-  `%HOMEPATH%\.platformio\platforms\espressif32\boards\eeed_xiao_esp32c6.json`
+[env:seeed_xiao_esp32c6]
+platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip
+board = seeed_xiao_esp32c6
+framework = arduino
+...
+```
 
-In practice this means: `C:\Users\<user>\.platformio\...`.
+> References: [Custom Embedded Boards](https://docs.platformio.org/en/latest/platforms/creating_board.html#installation),  [boards_dir](https://docs.platformio.org/en/latest/projectconf/sections/platformio/options/directory/boards_dir.html#projectconf-pio-boards-dir). 
 
 
-**NOTE:**
+The development branch of the [pioarduino](https://github.com/pioarduino/platform-espressif32) platform contains the board definition since November 6, 2024 ([Commit bdae53d
+](https://github.com/pioarduino/platform-espressif32/commit/bdae53d076dce7737f801cad9cba4595be3866a2). The first example project in this repository uses that branch. Here are the first few lines of its  configuration file. 
 
-The above will work, in the sense that the new board will show up in the Project Wizard. However, the additional file will be deleted when the `espressif32` platform is updated or reinstalled.
+```ini
+[platformio]
+; Make the Arduino IDE happy (.INO file must be in a directory of the same name)
+src_dir = pin_names
 
-There is a simple way to add a locally defined custom board definition to a project. See [Custom Embedded Boards](https://docs.platformio.org/en/latest/platforms/creating_board.html#installation) and [boards_dir](https://docs.platformio.org/en/latest/projectconf/sections/platformio/options/directory/boards_dir.html#projectconf-pio-boards-dir). 
-
-Hopefully, a future release of the `espressif32` platform will include a correct board definition and the problem will become moot. In the meantime, this definition [has been proposed](https://github.com/pioarduino/platform-espressif32/pull/46).
+[env:seeed_xiao_esp32c6]
+platform = https://github.com/pioarduino/platform-espressif32.git#develop
+...
+```
+In this project, the content of the `../board` directory will be ignored.

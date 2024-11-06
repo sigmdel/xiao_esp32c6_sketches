@@ -11,17 +11,34 @@ The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminut
 
 The current Espressif 32 [platform (version 6.9.0 dated Sept 26, 2024)](https://github.com/platformio/platform-espressif32/releases) in PlatformIO (PIO) is based on version 2.0.17 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6 (see [Add board support for Seeed XIAO ESP32C6](https://github.com/platformio/platform-espressif32/pull/1380#issuecomment-2205808510)). 
 
-However, a *fork was created due to the lack of ongoing development for the Espressif 32 Arduino Core for PlatformIO*. Using [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32) and a *homebrew* [board definition file](resources/README.md), it is possible to compile all the projects.
+However, a *fork was created due to the lack of ongoing development for the Espressif 32 Arduino Core for PlatformIO*. Using [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32) and a *homebrew* [board definition file](boards/README.md), it is possible to compile all the projects.
 
-Because of the Arduino sketch naming constraints, the `main.cpp` file of a project is not stored in the default `src` directory. A `src_dir` entry in the `platformio.ini` configuration file provides the name of the directory in which `main.cpp` is found. That will be the name of the Arduino sketch as shown below for the 01_pin_names project.
+Because of the Arduino sketch naming constraints, the `main.cpp` file of a project is not stored in the default `src` directory. A `src_dir` entry in the `platformio.ini` configuration file provides the name of the directory in which `main.cpp` is found. That will be the name of the Arduino sketch as shown below for the `02_blink_pulse_led` project.
 
 ```ini
 [platformio]
 ; Make the Arduino IDE happysupermini_esp32c3_sketches (github)%  (.INO file must be in a directory of the same name)
-src_dir = pin_names
+src_dir = blink_pulse_led
+boards_dir = ../boards
+
+[env:seeed_xiao_esp32c6]
+platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip          
+...
 ```
 
-PlatformIO will "convert" the `pin_names.ino` sketch file, but that is of no consequence since it contains only comments.
+PlatformIO will "convert" the `blink_pulse_led.ino` sketch file, but that is of no consequence since it contains only comments.
+
+Note that the *stable* branch of the **pioarduino platform** is used is all projects except for the first `01_pin_names`. In that case, the *develop*ment branch is used to test the merge of the `seeed_xiao_esp32c6.json` board definition file into the repository ([Add Seeed XIAO ESP32C6 board definition #46](https://github.com/pioarduino/platform-espressif32/pull/46)).
+
+```ini
+[platformio]
+; Make the Arduino IDE happy (.INO file must be in a directory of the same name)
+src_dir = pin_names
+
+[env:seeed_xiao_esp32c6]
+platform = https://github.com/pioarduino/platform-espressif32.git#develop          
+...
+```
 
 ## Arduino IDE Notes
 
@@ -65,7 +82,7 @@ NB:
   4. Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
   5. Need to install two libraries. The details are in [libraries/README.md](libraries/README.md).
   6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
-  7. Requires an external pull up resistor.
+  7. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
 
 
 ### About `08_zigbee_switch` and `09_zigbee_bulb`: 
