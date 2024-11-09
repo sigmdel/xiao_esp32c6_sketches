@@ -17,12 +17,13 @@ Because of the Arduino sketch naming constraints, the `main.cpp` file of a proje
 
 ```ini
 [platformio]
-; Make the Arduino IDE happysupermini_esp32c3_sketches (github)%  (.INO file must be in a directory of the same name)
+; Make the Arduino IDE happy (.INO file must be in a directory of the same name)
 src_dir = blink_pulse_led
 boards_dir = ../boards
 
 [env:seeed_xiao_esp32c6]
-platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip          
+platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip 
+board = seeed_xiao_esp32c6         
 ...
 ```
 
@@ -36,7 +37,8 @@ Note that the *stable* branch of the **pioarduino platform** is used is all proj
 src_dir = pin_names
 
 [env:seeed_xiao_esp32c6]
-platform = https://github.com/pioarduino/platform-espressif32.git#develop          
+platform = https://github.com/pioarduino/platform-espressif32.git#develop
+board = seeed_xiao_esp32c6
 ...
 ```
 
