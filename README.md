@@ -3,7 +3,7 @@
 
 ## Introduction
 
-The XIAO ESP32C6 is a recent addition to the Seeed Studio XIAO series of diminutive development boards. It is based on the Espressif ESP32-C6 SoC which is the second Espressif microcontroller based on a RISC-V core.
+The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) is a recent addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. It is based on the Espressif ESP32-C6 SoC which is the second Espressif microcontroller based on a RISC-V core.
 
 ![](images/ESP32C6_pinout.png)
 
