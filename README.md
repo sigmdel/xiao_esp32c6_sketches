@@ -22,7 +22,7 @@ src_dir = blink_pulse_led
 boards_dir = ../boards
 
 [env:seeed_xiao_esp32c6]
-platform = https://github.com/pioarduino/platform-espressif32/releases/download/51.03.07/platform-espressif32.zip 
+platform = http://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
 board = seeed_xiao_esp32c6         
 ...
 ```
