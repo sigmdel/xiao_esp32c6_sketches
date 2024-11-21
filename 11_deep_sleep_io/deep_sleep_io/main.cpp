@@ -13,7 +13,12 @@ OPERATION
   
 NOTE
   Define the USE_SERIAL macro to print statements to the 
-  console with the Serial peripheral
+  console with the Serial peripheral. This is best done in the 
+  Arduino IDE because its serial monitor will automatically
+  reconnect with the ESP32-C6 when it wakes from deep sleep
+  and reopens its serial port. With the PlaformIO terminal
+  it is necessary to reconnect manually whenever the board
+  comes out of deep sleep.
 *************************************************************/
 
 #include <Arduino.h>
