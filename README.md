@@ -70,12 +70,14 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6 | Modified [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
-| **09_zigbee_bulb**  | 6 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
+| **08_zigbee_switch**| 6 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
+| **09_zigbee_bulb**  | 6,7 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
-| **11_deep_sleep_io** | 7 | Deep sleep with wake up on I/O event |
+| **11_deep_sleep_io** | 8 | Deep sleep with wake up on I/O event |
 | **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
 | **13_wifi_uptime** | 5 | Comparing Wi-Fi connectivity across boards|
+| **14_zigbee_on_off_switch**| 6 | The [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.1.0-RC3/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino core |
+| **15_zigbee_on_off_light**  | 6,7 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/3.1.0-RC3/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino core |
 
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
@@ -83,17 +85,26 @@ NB:
   3. Released under the GNU LESSER GENERAL PUBLIC LICENSE.
   4. Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
   5. Need to install two libraries. The details are in [libraries/README.md](libraries/README.md).
-  6. Added support for some XIAO ESP32C6 features. Released under the Apache License, Version 2.0 .
-  7. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
+  6. Released under the Apache License, Version 2.0. 
+  7. Added support for some XIAO ESP32C6 features.
+  8. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
 
 
-### About `08_zigbee_switch` and `09_zigbee_bulb`: 
+### About `08_zigbee_switch` and `09_zigbee_bulb` (Deprecated) 
 
 Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
 
 The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. 
 
 With the August 6, 2024 correction that enables the RF switch and properly selects an antenna, it is no longer necessary to reduce the link quality threshold in the Zigbee_Light_Bulb sketch. Nevertheless, the LQI_THRESHOLD macro remains in the code.
+
+
+### About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
+
+Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
+
+The Zigbee_On_Off_Light board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It is possible to toggle the yellow LED on/off from the Zigbee2MQTT web interface.
+
 
 ### Further Details:
 
@@ -103,6 +114,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date |     |
 | ---  |  ---  |
+| 2024-11-23 | Add new Zigbee examples |
 | 2024-11-06 | PlatformIO support |
 | 2024-08-12 | Added Wi-Fi uptime test |
 | 2024-08-09 | Corrected and completed RF switch and antenna selection fix |
