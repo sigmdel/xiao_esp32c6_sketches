@@ -105,6 +105,7 @@ Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Of
 
 The Zigbee_On_Off_Light board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It is possible to toggle the yellow LED on/off from the Zigbee2MQTT web interface.
 
+(**Jan. 6 Update**) The two sketches were compiled with the latest `develop` branch of `pioarduino` in PlatformIO and the resultant firmwares were uploaded to two XIAOs on Jan. 3. The On_Off_Light end device could not connect to the On_Off_Switch coordinator nor to the Zigbee2MQTT coordinator as before. There was no time to invesitagate this problem, but hopefully a further update will be possible some time in the next two weeks. 
 
 ### Further Details:
 
@@ -112,8 +113,9 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## Change Log
 
-| Date |     |
-| ---  |  ---  |
+| Date | Entry    |
+| ---  |  --- | 
+| 2025-01-06 | Update about latest Zigbee problem | 
 | 2024-11-23 | Add new Zigbee examples |
 | 2024-11-06 | PlatformIO support |
 | 2024-08-12 | Added Wi-Fi uptime test |
@@ -136,6 +138,6 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## License
 
-Copyright 2024, Michel Deslierres. No rights reserved. 
+Copyright 2024, 2025 Michel Deslierres. No rights reserved. 
 
 While the copyright pertaining to included libraries must be respected, all the code by Michel Deslierres in this repository is in the public domain. In those jurisdictions where this may be a problem, the [BSD Zero Clause License](https://spdx.org/licenses/0BSD.html) applies.
