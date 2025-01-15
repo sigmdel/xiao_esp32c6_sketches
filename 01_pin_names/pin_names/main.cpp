@@ -1,13 +1,15 @@
 // Main module of pin_names.ino
 // Copyright: see notice in pin_names.ino
 
-// The XIAO ESP32C6 pin definitions are found in Arduino
-// ~/.arduino15/packages/esp32/hardware/esp32/3.0.1/variants/XIAO_ESP32C6/pins_arduino.h
+// The XIAO ESP32C6 pin definitions are found in 
+// https://github.com/espressif/arduino-esp32/blob/master/variants/XIAO_ESP32C6/pins_arduino.h
+// The BOOT_PIN definition for all ESP32s found in
+// https://github.com/espressif/arduino-esp32/blob/master/cores/esp32/esp32-hal.h
 
 #include <Arduino.h>
 
 void iopins(void) {
-  Serial.println("\n\nXIAO ESP32C6 I/O Pin Names and Numbers");
+  Serial.println("\n\nXIAO ESP32C6 I/O Pin Names and Numbers (defined in pins_arduino.h)");
 
   Serial.println("\nThe symbolic name and corresponding I/O number of the 11 digital pins");
   Serial.printf(" D0 = %2d\n", D0);
@@ -22,7 +24,7 @@ void iopins(void) {
   Serial.printf(" D9 = %2d\n", D9);
   Serial.printf("D10 = %2d\n", D10);
 
-  Serial.println("\nThe symbolic name and corresponding I/O number of the 4 analogue pins");
+  Serial.println("\nThe symbolic name and corresponding I/O number of the 3 analogue pins");
   Serial.printf(" A0 = %d\n", A0);
   Serial.printf(" A1 = %d\n", A1);
   Serial.printf(" A2 = %d\n", A2);
@@ -43,7 +45,7 @@ void iopins(void) {
   Serial.println("\nOnboard yellow LED");
   Serial.printf("LED_BUILTIN = %d\n", LED_BUILTIN);
   Serial.printf("BUILTIN_LED = %d // backward compatibility\n", BUILTIN_LED);
-  
+
   Serial.println("\nAntenna");
   if (ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 4)) {
     Serial.printf("    WIFI_ENABLE = %d  (RF switch power enable I/O)\n", WIFI_ENABLE);
@@ -53,6 +55,13 @@ void iopins(void) {
     Serial.println("  RF switch power enable I/O = 3   (= WIFI_ENABLE     in ESP32 core 3.0.4 or later)");
     Serial.println("RF switch select control I/O = 14  (= WIFI_ANT_CONFIG in ESP32 core 3.0.4 or later");
   }
+
+  #ifdef BOOT_PIN
+  Serial.println("\nBoot Button (defined in esp32-hal.h)");
+  Serial.printf("BOOT_PIN = %2d\n", BOOT_PIN);
+  #else
+  Serial.println("BOOT_PIN not defined")
+  #endif
 
   Serial.println("\nOther macros"); 
   Serial.printf("USB_VID          = 0x%04x\n", USB_VID);
