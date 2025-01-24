@@ -1,4 +1,7 @@
 # XIAO ESP32C6 Sketches
+
+*January 23, 2025*
+
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
 ## Introduction
@@ -70,14 +73,14 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
-| **09_zigbee_bulb**  | 6,7 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
+| **08_zigbee_switch**| 6,9 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
+| **09_zigbee_bulb**  | 6,7,9 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
 | **11_deep_sleep_io** | 8 | Deep sleep with wake up on I/O event |
 | **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
 | **13_wifi_uptime** | 5 | Comparing Wi-Fi connectivity across boards|
-| **14_zigbee_on_off_switch**| 6 | The [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.1.0-RC3/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino core |
-| **15_zigbee_on_off_light**  | 6,7 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/3.1.0-RC3/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino core |
+| **14_zigbee_on_off_switch**| 6,7 | Modified [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.1.1/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino 3.1.1 core |
+| **15_zigbee_on_off_light**  | 6,7 | Modified [Zigbee_On_Off_Light](https://github.com/espressif/arduino-esp32/tree/3.1.1/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino 3.1.1 core |
 
 NB:
   1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
@@ -88,24 +91,15 @@ NB:
   6. Released under the Apache License, Version 2.0. 
   7. Added support for some XIAO ESP32C6 features.
   8. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
-
-
-### About `08_zigbee_switch` and `09_zigbee_bulb` (Deprecated) 
-
-Flash the Zigbee_Light_Switch firmware on one XIAO ESP32C6 and the Zigbee_Light_Bulb firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
-
-The Zigbee_Light_Bulb board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. 
-
-With the August 6, 2024 correction that enables the RF switch and properly selects an antenna, it is no longer necessary to reduce the link quality threshold in the Zigbee_Light_Bulb sketch. Nevertheless, the LQI_THRESHOLD macro remains in the code.
-
+  9. Deprecated
 
 ### About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
 
-Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. 
+These sketches replace the deprecated `08_zigbee_switch` and `09_zigbee_bulb` sketches respectively.
 
-The Zigbee_On_Off_Light board will pair with a Zigbee2MQTT coordinator although it is not supported by the latter. It is possible to toggle the yellow LED on/off from the Zigbee2MQTT web interface.
+Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
 
-(**Jan. 6 Update**) The two sketches were compiled with the latest `develop` branch of `pioarduino` in PlatformIO and the resultant firmwares were uploaded to two XIAOs on Jan. 3. The On_Off_Light end device could not connect to the On_Off_Switch coordinator nor to the Zigbee2MQTT coordinator as before. There was no time to invesitagate this problem, but hopefully a further update will be possible some time in the next two weeks. 
+(**Jan. 6 Update**) The two sketches were compiled with the latest `develop` branch of `pioarduino` in PlatformIO and uploaded to two XIAOs on Jan. 3. The On_Off_Light end device could not connect to the On_Off_Switch coordinator nor to the Zigbee2MQTT coordinator as before. There was no time to investigate this problem. The **Jan 23** update of the two Zigbee examples from the ESP32 version 3.1.1 shows that the two sketches can be compiled in the Arduino IDE and do they do work as expected. Hopefully a further update about the situation with `pioarduino` will be possible before the end of January. 
 
 ### Further Details:
 
@@ -113,14 +107,15 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## Change Log
 
-| Date | Entry    |
-| ---  |  --- | 
+| Date | Change |
+| :---  |  :--- | 
+| 2025-01-23 | Update Zigbee_On_Off_Switch and Zigbee_On_Off_Light using the ESP32 version 3.1.1 Zigbee examples |
 | 2025-01-06 | Update about latest Zigbee problem | 
 | 2024-11-23 | Add new Zigbee examples |
 | 2024-11-06 | PlatformIO support |
 | 2024-08-12 | Added Wi-Fi uptime test |
 | 2024-08-09 | Corrected and completed RF switch and antenna selection fix |
-| 2024-08-09 | Made the project self-contained by adding private copies of required libraries. |
+| 2024-08-09 | Made the project self-contained by adding private copies of required libraries |
 | 2024-08-06 | Fixed RF switch enable and antenna selection for ESP32 Arduino 3.0.2 and up|
 | 2024-08-05 | Investigation of I/O ports controlling the antenna RF switch|
 | 2024-08-04 | New pin definitions added in ESP32 Arduino 3.0.4|
