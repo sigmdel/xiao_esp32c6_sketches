@@ -1,6 +1,6 @@
 # XIAO ESP32C6 Sketches
 
-*January 23, 2025*
+*January 24, 2025*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
@@ -32,7 +32,7 @@ board = seeed_xiao_esp32c6
 
 PlatformIO will "convert" the `blink_pulse_led.ino` sketch file, but that is of no consequence since it contains only comments.
 
-Note that the *stable* branch of the **pioarduino platform** is used is all projects except for the first `01_pin_names`. In that case, the *develop*ment branch is used to test the merge of the `seeed_xiao_esp32c6.json` board definition file into the repository ([Add Seeed XIAO ESP32C6 board definition #46](https://github.com/pioarduino/platform-espressif32/pull/46)).
+Note that the *stable* branch of the **pioarduino platform** is used is all projects except for `01_pin_names`, `14_zigbee-on-off-switch` and `15_zigbee-on-off-light`. In those cases, the *develop*ment branch is used to test the merge of the `seeed_xiao_esp32c6.json` board definition file into the repository ([Add Seeed XIAO ESP32C6 board definition #46](https://github.com/pioarduino/platform-espressif32/pull/46)).
 
 ```ini
 [platformio]
@@ -53,7 +53,9 @@ Install the latest Espressif ESP32 Arduino core.
 
  1. Add https://espressif.github.io/arduino-esp32/package_esp32_index.json in the Additional Boards Manager URLS in the Preferences window in the IDE.
   
- 1.  Install platform `esp32` by Espressif version 3.0.2 or newer with the Boards Manager
+ 1.  Install platform `esp32` by Espressif version 3.1.1 or newer with the Boards Manager. 
+ 
+      >The `08_zigbee_switch` and `09_zigbee_bulb` sketches will not work in version 3.1.1 of the ESP32 Arduino core. They have been replaced with `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` respectively. If for some reason, it is essential to use the old zigbee examples, try compiling them with version 3.0.4 of the `esp32` Arduino core.
 
 Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project.
 
@@ -73,8 +75,8 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6,9 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino core |
-| **09_zigbee_bulb**  | 6,7,9 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino core |
+| **08_zigbee_switch**| 6,9 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino 3.0.4 core  |
+| **09_zigbee_bulb**  | 6,7,9 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino 3.0.4 core |
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
 | **11_deep_sleep_io** | 8 | Deep sleep with wake up on I/O event |
 | **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
@@ -99,7 +101,8 @@ These sketches replace the deprecated `08_zigbee_switch` and `09_zigbee_bulb` sk
 
 Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
 
-(**Jan. 6 Update**) The two sketches were compiled with the latest `develop` branch of `pioarduino` in PlatformIO and uploaded to two XIAOs on Jan. 3. The On_Off_Light end device could not connect to the On_Off_Switch coordinator nor to the Zigbee2MQTT coordinator as before. There was no time to investigate this problem. The **Jan 23** update of the two Zigbee examples from the ESP32 version 3.1.1 shows that the two sketches can be compiled in the Arduino IDE and do they do work as expected. Hopefully a further update about the situation with `pioarduino` will be possible before the end of January. 
+(**Jan. 24, 2025 Update**) The two sketches were compiled with the latest `esp32` Arduino core by Espressif which was version 3.1.1 and worked as described in the previous paragraph. The two sketches were also compiled with the latest  `develop` branch of `pioarduino` in PlatformIO obtained on January 24th. It appears that this
+is either version 3.1.1 of the Arduino core or 3.1.0+develop, it's rather confusing. In any case, the two sketches did work as described in the previous paragraph. 
 
 ### Further Details:
 
@@ -109,6 +112,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date | Change |
 | :---  |  :--- | 
+| 2025-01-24 | Confirmed that Zigbee_On_Off_Switch and Zigbee_On_Off_Light can be compiled with the most recent version of pioarduino in PlatformIO |
 | 2025-01-23 | Update Zigbee_On_Off_Switch and Zigbee_On_Off_Light using the ESP32 version 3.1.1 Zigbee examples |
 | 2025-01-06 | Update about latest Zigbee problem | 
 | 2024-11-23 | Add new Zigbee examples |
