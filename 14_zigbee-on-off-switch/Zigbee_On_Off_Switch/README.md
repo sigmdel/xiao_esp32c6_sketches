@@ -1,8 +1,10 @@
-# Arduino-ESP32 Zigbee On/Off Light Switch Example
+# Arduino-ESP32 Zigbee On/Off Switch Example
 
 This example shows how to configure Zigbee Coordinator and use it as a Home Automation (HA) on/off light switch.
 
-# Supported Targets
+**The original README was renamed [README-org.md](README-org.md)**
+
+## Supported Targets
 
 Currently, this example supports the following targets.
 
@@ -11,58 +13,55 @@ Currently, this example supports the following targets.
 
 ## Hardware Required
 
-* One development board (ESP32-H2 or ESP32-C6) acting as Zigbee end device (loaded with Zigbee_On_Off_Light example).
-* A USB cable for power supply and programming.
-* Choose another board (ESP32-H2 or ESP32-C6) as Zigbee coordinator and upload the Zigbee_On_Off_Switch example.
+* A development board (ESP32-H2 or ESP32-C6 based) acting as a Zigbee end device (running the Zigbee_On_Off_Light example).
 
-### Configure the Project
+* Another development board (ESP32-H2 or ESP32-C6 based) acting as a Zigbee coordinator (running the Zigbee_On_Off_Switch example).
 
-Set the Button Switch GPIO by changing the `GPIO_INPUT_IO_TOGGLE_SWITCH` definition. By default, it's the pin `9` (BOOT button on ESP32-C6 and ESP32-H2).
+* 5 volt power supplies for the two boards and USB cables for power supply and programming.
 
-#### Using Arduino IDE
+## Configure the Project
 
-To get more information about the Espressif boards see [Espressif Development Kits](https://www.espressif.com/en/products/devkits).
+Three macros are defined at the top of the source (main.cpp) to handle different development boards. These are
+  1. GPIO_INPUT_IO_TOGGLE_SWITCH - number of the I/O pin to which a push button switch is connected. By default this is BOOT_PIN = 9 which is connected to the Boot button on the ESP32-H2 and the ESP32-C6.
+  1. SERIAL_BAUD - usually 115200 if the development board has a discrete USB-to-serial adapter and not used otherwise.
+  1. USE_EXTERNAL_ANTENNA - define only if the board is an XIAO ESP32C6 and only if an external antenna is used.
 
-* Before Compile/Verify, select the correct board: `Tools -> Board`.
-* Select the Coordinator Zigbee mode: `Tools -> Zigbee mode: Zigbee ZCZR (coordinator/router)`.
-* Select Partition Scheme for Zigbee: `Tools -> Partition Scheme: Zigbee 4MB with spiffs`.
-* Select the COM port: `Tools -> Port: xxx where the `xxx` is the detected COM port.
-* Optional: Set debug level to verbose to see all logs from Zigbee stack: `Tools -> Core Debug Level: Verbose`.
+The macros are automatically defined correctly for the [Seeed Studio XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) and should also be correct for the [Espressif Development Kits](https://www.espressif.com/en/products/devkits) although these have not been tested. It may be necessary to tweak some macros for other ESP32-C6 or ESP32-H2 based boards.
 
-## Troubleshooting
 
-If the End device flashed with the example `Zigbee_On_Off_Light` is not connecting to the coordinator, erase the flash of the End device before flashing the example to the board. It is recommended to do this if you re-flash the coordinator.
-You can do the following:
+## Compiling and Uploading the Sketch
 
-* In the Arduino IDE go to the Tools menu and set `Erase All Flash Before Sketch Upload` to `Enabled`.
-* In the `Zigbee_On_Off_Light` example sketch call `Zigbee.factoryReset();`.
+### Using Arduino IDE
 
-By default, the coordinator network is closed after rebooting or flashing new firmware.
-To open the network you have 2 options:
+Before Compile/Verify, go to the `Tools` menu to modify the following options.
 
-* Open network after reboot by setting `Zigbee.setRebootOpenNetwork(time);` before calling `Zigbee.begin();`.
-* In application you can anytime call `Zigbee.openNetwork(time);` to open the network for devices to join.
+* Select the correct **Board** (example: *"XIAO_ESP32C6"*).
+* Select the correct **Port** (examples: *"/dev/ttyACM0"* in Linux, *"Com4"* in Windows).
+* Set the **Partition Scheme** to *"Zigbee ZCZR 4MB with spiffs"*.
+* Set the **Zigbee mode** *"Zigbee ZCZR (coordinator/router)"*.
+* Optional: Set **Core Debug Level** to the desired level such as *"Verbose"* (default is *"None"*).
+* Optional: Set **Erase All Flash Before Sketch Upload** to *"Enabled"* (default is *"Disabled"*).
 
-***Important: Make sure you are using a good quality USB cable and that you have a reliable power source***
+![IDE-Tools-screenshot](../tools_config.jpg)
 
-* **LED not blinking:** Check the wiring connection and the IO selection.
-* **Programming Fail:** If the programming/flash procedure fails, try reducing the serial connection speed.
-* **COM port not detected:** Check the USB cable and the USB to Serial driver installation.
+### Using PlatformIO
 
-If the error persists, you can ask for help at the official [ESP32 forum](https://esp32.com) or see [Contribute](#contribute).
+*forthcoming*
 
-## Contribute
+## Connecting to a Zigbee Coordinator
 
-To know how to contribute to this project, see [How to contribute.](https://github.com/espressif/arduino-esp32/blob/master/CONTRIBUTING.rst)
+Assuming that the Zigbee_On_Off_Light firmware was uploaded to the development board with **Erase All Flash Before Sketch Upload** set to *"Enabled"*, here are the steps to connect to a coordinator for the first time.
 
-If you have any **feedback** or **issue** to report on this example/library, please open an issue or fix it by creating a new PR. Contributions are more than welcome!
+It is best to ensure that the development board running the Zigbee_On_Off_Switch coordinator firmware is very near to the ESP32 dev board running the Zigbee_On_Off_Light end device firmware. Tests have shown that another Zigbee coordinator or a Zigbee router a few metres away will not interfere.
 
-Before creating a new issue, be sure to try Troubleshooting and check if the same issue was already created by someone else.
+- Power up the development board running the `Zigbee_On_Off_Light` sketch. 
 
-## Resources
+- Power up the development board running the `Zigbee_On_Off_Switch` sketch. The `setup()` routine 
 
-* Official ESP32 Forum: [Link](https://esp32.com)
-* Arduino-ESP32 Official Repository: [espressif/arduino-esp32](https://github.com/espressif/arduino-esp32)
-* ESP32-C6 Datasheet: [Link to datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)
-* ESP32-H2 Datasheet: [Link to datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-h2_datasheet_en.pdf)
-* Official ESP-IDF documentation: [ESP-IDF](https://idf.espressif.com)
+    - opens the network allowing end device to join for 180 seconds with the `Zigbee.setRebootOpenNetwork()` method,
+
+    - starts Zigbee in coordinator mode,
+
+    - enters a loop waiting for a light end device to connect.
+
+After a short while, the end device (...Light) should have joined the Zigbee network created by the coordinator (...Switch). The serial output of the two devices should make that clear, especially if the **core debug level** was set to `"Verbose"`. In any case, test by pressing the boot button of the coordinator. It should toggle the state of the LED on the end device.
