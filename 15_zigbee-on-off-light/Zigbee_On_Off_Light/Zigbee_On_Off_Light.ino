@@ -27,10 +27,12 @@
  *
  *---------------------------------------------------------------------------------------
  *
- * Slightlty modified to support the XIAO ESP32C6 
- *   - added USE_EXTERNAL_ANTENNA macro if using external antenna 
- *   - instead of RGB LED uses the onboard yellow LED which is turned ON with LOW signal
+ * Slightlty modified to support the XIAO ESP32C6 and perhaps other 
+ * ESP32-C6 or ESP32-H2 based boards
+ *   - support for simple LED added
+ *   - support for active LOW LED added
+ *   - support for the XIAO ESP32C6 external antenna antenna added
  *
  * Michel Deslierres (https://github.com/sigmdel)
- * Nov 22, 2024
+ * Jan 23, 2025
  */
