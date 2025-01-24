@@ -25,4 +25,13 @@
  * Please check the README.md for instructions and more detailed description.
  *
  * Created by Jan Procházka (https://github.com/P-R-O-C-H-Y/)
+ *
+ *---------------------------------------------------------------------------------------
+ *
+ * Slightlty modified to support the XIAO ESP32C6 and perhaps other 
+ * ESP32-C6 or ESP32-H2 based boards without discrete USB-to-serial 
+ * adapter. Support the XIAO ESP32C6 external antenna if used.
+ *
+ * Michel Deslierres (https://github.com/sigmdel)
+ * Jan 23, 2025
  */
