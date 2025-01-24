@@ -60,7 +60,7 @@ void setup() {
   #ifdef TEST_NO
   Serial.printf("Zigbee_On_Off_Light, test #%d\n\n", TEST_NO); // 
   #endif 
-  rgbLedWrite(HIGH);
+
   // Init LED and turn it OFF (if LED_PIN == RGB_BUILTIN, the rgbLedWrite() will be used under the hood)
   pinMode(led, OUTPUT);
   //digitalWrite(led, LOW);
