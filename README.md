@@ -4,9 +4,12 @@
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
+:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*.
+
+
 ## Introduction
 
-The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) is a recent addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. It is based on the Espressif ESP32-C6 SoC which is the second Espressif microcontroller based on a RISC-V core.
+The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) was the eighth addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. As its name makes clear, it is based on an SoC from the Espressif ESP32-C6 Series of microcontrolers. 
 
 ![](images/ESP32C6_pinout.png)
 
@@ -112,6 +115,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date | Change |
 | :---  |  :--- | 
+| 2026-01-27 | Created v3.1.1_2025-01-24 tag and release |
 | 2025-01-24 | Confirmed that Zigbee_On_Off_Switch and Zigbee_On_Off_Light can be compiled with the most recent version of pioarduino in PlatformIO |
 | 2025-01-23 | Update Zigbee_On_Off_Switch and Zigbee_On_Off_Light using the ESP32 version 3.1.1 Zigbee examples |
 | 2025-01-06 | Update about latest Zigbee problem | 
@@ -137,6 +141,6 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## License
 
-Copyright 2024, 2025 Michel Deslierres. No rights reserved. 
+Copyright 2024-2026 Michel Deslierres. No rights reserved. 
 
 While the copyright pertaining to included libraries must be respected, all the code by Michel Deslierres in this repository is in the public domain. In those jurisdictions where this may be a problem, the [BSD Zero Clause License](https://spdx.org/licenses/0BSD.html) applies.
