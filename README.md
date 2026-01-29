@@ -1,6 +1,6 @@
 # XIAO ESP32C6 Sketches
 
-*January 24, 2025*
+*January 28, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
@@ -9,63 +9,83 @@
 
 ## Introduction
 
-The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) was the eighth addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. As its name makes clear, it is based on an SoC from the Espressif ESP32-C6 Series of microcontrolers. 
+The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) was the eighth addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. As its name makes clear, it is based on a SoC from the Espressif ESP32-C6 Series of microcontrollers. 
 
 ![](images/ESP32C6_pinout.png)
 
-## PlatformIO Notes
+## Development Environments
 
-The current Espressif 32 [platform (version 6.9.0 dated Sept 26, 2024)](https://github.com/platformio/platform-espressif32/releases) in PlatformIO (PIO) is based on version 2.0.17 of the ESP32 Arduino core. Consequently it does not support the XIAO ESP32C6 (see [Add board support for Seeed XIAO ESP32C6](https://github.com/platformio/platform-espressif32/pull/1380#issuecomment-2205808510)). 
-
-However, a *fork was created due to the lack of ongoing development for the Espressif 32 Arduino Core for PlatformIO*. Using [pioarduino (p)eople (i)nitiated (o)ptimized (arduino)](https://github.com/pioarduino/platform-espressif32) and a *homebrew* [board definition file](boards/README.md), it is possible to compile all the projects.
-
-Because of the Arduino sketch naming constraints, the `main.cpp` file of a project is not stored in the default `src` directory. A `src_dir` entry in the `platformio.ini` configuration file provides the name of the directory in which `main.cpp` is found. That will be the name of the Arduino sketch as shown below for the `02_blink_pulse_led` project.
-
-```ini
-[platformio]
-; Make the Arduino IDE happy (.INO file must be in a directory of the same name)
-src_dir = blink_pulse_led
-boards_dir = ../boards
-
-[env:seeed_xiao_esp32c6]
-platform = http://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
-board = seeed_xiao_esp32c6         
-...
-```
-
-PlatformIO will "convert" the `blink_pulse_led.ino` sketch file, but that is of no consequence since it contains only comments.
-
-Note that the *stable* branch of the **pioarduino platform** is used is all projects except for `01_pin_names`, `14_zigbee-on-off-switch` and `15_zigbee-on-off-light`. In those cases, the *develop*ment branch is used to test the merge of the `seeed_xiao_esp32c6.json` board definition file into the repository ([Add Seeed XIAO ESP32C6 board definition #46](https://github.com/pioarduino/platform-espressif32/pull/46)).
-
-```ini
-[platformio]
-; Make the Arduino IDE happy (.INO file must be in a directory of the same name)
-src_dir = pin_names
-
-[env:seeed_xiao_esp32c6]
-platform = https://github.com/pioarduino/platform-espressif32.git#develop
-board = seeed_xiao_esp32c6
-...
-```
-
-## Arduino IDE Notes
-
-The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino. 
-
-Install the latest Espressif ESP32 Arduino core.
-
- 1. Add https://espressif.github.io/arduino-esp32/package_esp32_index.json in the Additional Boards Manager URLS in the Preferences window in the IDE.
-  
- 1.  Install platform `esp32` by Espressif version 3.1.1 or newer with the Boards Manager. 
- 
-      >The `08_zigbee_switch` and `09_zigbee_bulb` sketches will not work in version 3.1.1 of the ESP32 Arduino core. They have been replaced with `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` respectively. If for some reason, it is essential to use the old zigbee examples, try compiling them with version 3.0.4 of the `esp32` Arduino core.
-
-Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project.
-
-Arduino sketches must have an `.ino` file name extension and must be contained in a directory that has the same name as the Arduino sketch (excluding the extension). Consequently the `01_pin_names` project contains a directory named `pin_names` that in turn contains the Arduino sketch `pin_names.ino`. That sketch is basically empty as it is a long comment only. This is not a problem because the Arduino IDE will import all source files found in the sketch directory. The actual code is in `main.cpp` which is the default name of a PlatformIO project.
+It should be possible to compile each project in the Arduino IDE or the pioarduino IDE with a minimum of fuss and without any need to install anything other than this repository. To accomplish this each Arduino sketch is contained in a PIO (PlatformIO or pioarduino) project.
 
 ![Directory tree](images/dir_tree.jpg) 
 
+Arduino sketches must have an `.ino` file name extension and must be contained in a directory with the same name as the Arduino sketch (excluding the extension). However, `pin_names.ino` is basically empty as it contains only comments and the actual code is in `main.cpp`. This is not a problem because the Arduino IDE will import all source files found in the same directory as the sketch. 
+
+PIO, on the other hand, expects the `main.cpp` source in a directory named `src` alongside the project configuration file always named `platformio.ini`. Fortunately, the source directory can have another name, such as `pin_names`, if the latter is specified in the configuration file. 
+
+### Arduino 
+
+The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino. Installing the latest Espressif ESP32 Arduino core is a two-step procedure.
+
+ 1. Add https://espressif.github.io/arduino-esp32/package_esp32_index.json in the Additional Boards Manager URLS in the Preferences window in the IDE.
+  
+ 1. Using the Boards Manager (`Tools` / `Board` / `Boards Manager`), install platform `esp32` by Espressif, version 3.3.6 or newer. 
+
+This is a one-time task. 
+
+Many of the sketches are dependent on a library stored in the local `libraries` folder contained in this repository. That directory will be searched only if the sketchbook location in the IDE **Preferences** settings is the directory containing the downloaded repository. 
+       
+[![](images/arduino_preferences.jpg)](images/arduino_preferences_big.jpg)
+
+ - Adjust the location to reflect the actual directory on the local machine.
+ - Keep track of the old sketchbook location before changing it.  
+ - Reset the sketchbook location to its old value when done with sketches in this repository.
+
+When compiling a project, select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE. The default values for the other options in the menu are acceptable except for the Zigbee sketches. See their respective README for details.
+
+
+<!--
+### Arduino Sketch Compilation
+
+1. Open the desire sketch: `File` / `Sketchbook` / `<xx_project>` / `<sketch>`.
+
+![](images/arduino_sketchbook.jpg)
+
+1. Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project. The default values for the other options in the menu are acceptable except for the Zigbee sketches. See their respective README for details.
+-->
+
+### pioarduino 
+
+While [PlatformIO](https://platformio.org/) is widely used, it is simpler to use the [pioarduino](https://github.com/pioarduino/pioarduino-vscode-ide) fork when working with recent ESP32 microcontrollers.
+
+Unlike the Arduino IDE, pioarduino IDE is not a stand alone application. It is an [extension](https://marketplace.visualstudio.com/items?itemName=pioarduino.pioarduino-ide) that is installed in the code editor [Visual Studio Code](https://code.visualstudio.com/) (VSCode), or [VSCodium](https://vscodium.com/). The later is less well known fork of the former that claims to have removed telemetry/tracking from VSCode. So far, it does not contain the AI additions to VSCode. 
+
+The pioarduino IDE extension is available in the extension marketplace of both code editors. Consequently, its installation is a simple three step procedure. 
+
+![Install pio extension](images/extension_installation.jpg)
+
+This is a one-time task.
+
+All configuration settings of a project are specified in a `platformio.ini` file contained in the root directory of the project. Since these are included in the repository, there is usually nothing to do. Here is an example configuration file.
+
+```ini
+[platformio]
+
+src_dir = scan_wifi    ; Arduino requirement: sketch source: ../scan_wifi/scan_wifi.ino
+lib_dir = ../libraries ; relative to the directory containing this configuration file
+
+[env:seeed_xiao_esp32c6]
+platform = https://github.com/pioarduino/platform-espressif32/releases/download/stable/platform-espressif32.zip
+board = seeed_xiao_esp32c6
+framework = arduino
+monitor_speed = 460800
+;upload_port = /dev/ttyACM0
+;monitor_port = /dev/ttyACM0    
+```
+
+The [pioarduino-espressif32](https://github.com/pioarduino/platform-espressif32) platform is used. Currently the version used is [pioarduino/platform-espressif Release 55.03.36 Arduino Release v3.3.6 based on ESP-IDF v5.5.2.260116](https://github.com/pioarduino/platform-espressif32/releases/tag/55.03.36) released on January 21, 2026. 
+
+The IDE will automatically install the platform first time it is used. Because of that, the first compilation against a new platform takes considerably more time than subsequent compilations.
 
 ## List of Projects      
 
@@ -78,8 +98,8 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
-| **08_zigbee_switch**| 6,9 | The [Zigbee_Light_Switch](https://github.com/espressif/arduino-esp32/tree/3.0.2/libraries/ESP32/examples/Zigbee/Zigbee_Light_Switch) example from the esp32-arduino 3.0.4 core  |
-| **09_zigbee_bulb**  | 6,7,9 | Modified [Zigbee_Light_Bulb](https://github.com/espressif/arduino-esp32/tree/master/libraries/ESP32/examples/Zigbee/Zigbee_Light_Bulb) example from the esp32-arduino 3.0.4 core |
+| ~~08_zigbee_switch~~|  | *use 14_zigbee_on_off_switch*  |
+| ~~09_zigbee_bulb~~  |  | *use 15_zigbee_on_off_light* |
 | **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
 | **11_deep_sleep_io** | 8 | Deep sleep with wake up on I/O event |
 | **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
