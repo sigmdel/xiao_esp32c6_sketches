@@ -22,7 +22,7 @@
 ///  to 5000 if running in the PlaformIO IDE to manually switch
 ///  to the serial monitor otherwise to 2000 if an native USB 
 ///  peripheral is used or 1000 if a USB-serial adpater is used.
-#define SERIAL_BEGIN_DELAY 10000
+///#define SERIAL_BEGIN_DELAY 10000
 ///
 //////////////////////////////////
 
@@ -43,6 +43,7 @@
   #define TITLE "XIAO_ESP32C5"
   #define ANTENNA "A-01 FPC"
 #elif defined(ARDUINO_XIAO_ESP32C6)
+  // The onboard ceramic antenna is used by default.
   #define TITLE "XIAO ESP32C6"
   #ifdef USE_EXTERNAL_ANTENNA 
     #define ANTENNA "EXTERNAL"
