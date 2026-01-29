@@ -1,5 +1,7 @@
 # Additional Libraries
 
+Many sketcthes use the MACs library to display one of the various MAC addresses an ESP can have. Since it is derived from an example in the ESP32 Arduino Core by Espressif, it is released under the LGPL-2.1 licence. 
+
 The `async_web_led` sketch is dependant on two libraries
 
   1. [AsyncTCP](https://github.com/me-no-dev/AsyncTCP)
