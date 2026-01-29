@@ -1,5 +1,6 @@
-// Main module of blink_pulse_led
-// Copyright: see notice in blink_pulse.ino
+/*
+ *  See blink_pulse_led.ino for license and attribution.
+ */
 
 #include <Arduino.h>
 
