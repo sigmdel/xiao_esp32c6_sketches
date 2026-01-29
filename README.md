@@ -1,19 +1,34 @@
 # XIAO ESP32C6 Sketches
 
-*January 28, 2026*
+*January 29, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
-:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*.
+:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `03_wifi_scan` have been updated.
+
+**Table of Contents**
+<!-- TOC -->
+
+- [1. Introduction](#1-introduction)
+- [2. Development Environments](#2-development-environments)
+  - [2.1. Arduino](#21-arduino)
+  - [2.2. pioarduino](#22-pioarduino)
+- [3. List of Projects](#3-list-of-projects)
+  - [3.1. About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light`](#31-about-14_zigbee_on_off_switch-and-15_zigbee_on_off_light)
+  - [3.2. Further Details:](#32-further-details)
+- [4. Change Log](#4-change-log)
+- [5. License](#5-license)
+
+<!-- /TOC -->
 
 
-## Introduction
+## 1. Introduction
 
 The [XIAO ESP32C6](https://www.seeedstudio.com/Seeed-Studio-XIAO-ESP32C6-p-5884.html) was the eighth addition to the [Seeed Studio XIAO series](https://www.seeedstudio.com/xiao) of diminutive development boards. As its name makes clear, it is based on a SoC from the Espressif ESP32-C6 Series of microcontrollers. 
 
 ![](images/ESP32C6_pinout.png)
 
-## Development Environments
+## 2. Development Environments
 
 It should be possible to compile each project in the Arduino IDE or the pioarduino IDE with a minimum of fuss and without any need to install anything other than this repository. To accomplish this each Arduino sketch is contained in a PIO (PlatformIO or pioarduino) project.
 
@@ -23,7 +38,7 @@ Arduino sketches must have an `.ino` file name extension and must be contained i
 
 PIO, on the other hand, expects the `main.cpp` source in a directory named `src` alongside the project configuration file always named `platformio.ini`. Fortunately, the source directory can have another name, such as `pin_names`, if the latter is specified in the configuration file. 
 
-### Arduino 
+### 2.1. Arduino 
 
 The latest version of the Arduino IDE can be obtained for Windows, Linux and macOS in the [Downloads](https://www.arduino.cc/en/software) page from Arduino. Installing the latest Espressif ESP32 Arduino core is a two-step procedure.
 
@@ -44,17 +59,7 @@ Many of the sketches are dependent on a library stored in the local `libraries` 
 When compiling a project, select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE. The default values for the other options in the menu are acceptable except for the Zigbee sketches. See their respective README for details.
 
 
-<!--
-### Arduino Sketch Compilation
-
-1. Open the desire sketch: `File` / `Sketchbook` / `<xx_project>` / `<sketch>`.
-
-![](images/arduino_sketchbook.jpg)
-
-1. Select the `XIAO_ESP32C6` board in the `Tools` menu of the IDE when compiling a project. The default values for the other options in the menu are acceptable except for the Zigbee sketches. See their respective README for details.
--->
-
-### pioarduino 
+### 2.2. pioarduino 
 
 While [PlatformIO](https://platformio.org/) is widely used, it is simpler to use the [pioarduino](https://github.com/pioarduino/pioarduino-vscode-ide) fork when working with recent ESP32 microcontrollers.
 
@@ -87,13 +92,14 @@ The [pioarduino-espressif32](https://github.com/pioarduino/platform-espressif32)
 
 The IDE will automatically install the platform first time it is used. Because of that, the first compilation against a new platform takes considerably more time than subsequent compilations.
 
-## List of Projects      
+## 3. List of Projects      
 
 | Project | NB |Purpose |
 | ---     |:---:| --- |
-| **01_pin_names** | 1,2 | Shows the content of `pins_arduino.h` |
+| **00_sys_info** | | Prints information about the mcu, memory, firmware size and the antenna configuration |
+| **01_pin_names** | 1,2 | Shows the content of `pins_arduino.h` and prints some defined macros |
 | **02_blink_pulse_led** | 2 | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
-| **03_scan_wifi** | 2,3 | [WiFiScan](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi/examples/WiFiScan) example from the esp32-arduino core |
+| **03_scan_wifi** | 2,3 | Modified [WiFiScan](ttps://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino) example from older (3.1.1) esp32-arduino core |
 | **04_wifi_blackhole** | 4 | Looks at Wi-Fi station connect times |
 | **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
@@ -118,23 +124,26 @@ NB:
   8. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
   9. Deprecated
 
-### About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
+### 3.1. About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
 
 These sketches replace the deprecated `08_zigbee_switch` and `09_zigbee_bulb` sketches respectively.
 
 Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
 
-(**Jan. 24, 2025 Update**) The two sketches were compiled with the latest `esp32` Arduino core by Espressif which was version 3.1.1 and worked as described in the previous paragraph. The two sketches were also compiled with the latest  `develop` branch of `pioarduino` in PlatformIO obtained on January 24th. It appears that this
-is either version 3.1.1 of the Arduino core or 3.1.0+develop, it's rather confusing. In any case, the two sketches did work as described in the previous paragraph. 
 
-### Further Details:
+### 3.2. Further Details:
 
-See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs.
+See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs. 
 
-## Change Log
+## 4. Change Log
+
+0_sys_info		Prints information about the mcu, memory, firmware size and the antenna configuration
+01_pin_names	1,2	Shows the content of pins_arduino.h, report defined macros
+02_blink_pulse_led
 
 | Date | Change |
 | :---  |  :--- | 
+| 2026-01-29 | Removed old zigbee examples, added 00_sys_info project, updated 01_pin_names, 02_blink_pulse_led, and this file |
 | 2026-01-27 | Created v3.1.1_2025-01-24 tag and release |
 | 2025-01-24 | Confirmed that Zigbee_On_Off_Switch and Zigbee_On_Off_Light can be compiled with the most recent version of pioarduino in PlatformIO |
 | 2025-01-23 | Update Zigbee_On_Off_Switch and Zigbee_On_Off_Light using the ESP32 version 3.1.1 Zigbee examples |
@@ -159,7 +168,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 | 2024-06-25 | Updated after version 3.0.2 of `esp32` core released |
 | 2024-06-24 | Initial version |
 
-## License
+## 5. License
 
 Copyright 2024-2026 Michel Deslierres. No rights reserved. 
 

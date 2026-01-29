@@ -9,13 +9,28 @@
  *
  *  1- Add https://espressif.github.io/arduino-esp32/package_esp32_index.json
  *     in the Additional Boards Manager URLS in the Preferences window.
- *  2- Install platform esp32 by Espressif version 3.0.2 or newer with the Boards Manager
+ *  2- Install platform esp32 by Espressif version 3.3.6 or newer with the Boards Manager
  *  3- Select the XIAO_ESP32C6 board
  *
  * Michel Deslierres
- * June 25, 2024
+ * January 26, 2026
  *
- * Copyright 2024, Michel Deslierres. No rights reserved, this code is in the public domain.
- * In those jurisdictions where this may be a problem, the BSD Zero Clause License applies.
- * <https://spdx.org/licenses/0BSD.html> */
- // SPDX-License-Identifier: 0BSD
+ * From the original source:
+ *
+ *  This sketch demonstrates how to scan WiFi networks.
+ *  The API is based on the Arduino WiFi Shield library, but has significant changes as newer WiFi functions are supported.
+ *  E.g. the return value of `encryptionType()` different because more modern encryption is supported.
+ *  Source: https://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino
+ *
+ * Modifications:
+ *  - Added Wi-Fi BSSID in the list of networks
+ *  - Added warning that both 2.4GHz and 5GHz band networks will be listed
+ *    if the Soc supports dual band Wi-Fi (ESP32-C5) and suggestion to run
+ *    a more current example
+ *
+ *  Licence
+ *    The original example appears to have been released under the
+ *    GNU LESSER GENERAL PUBLIC LICENSE 2.1
+ *    see: https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md
+ */
+
