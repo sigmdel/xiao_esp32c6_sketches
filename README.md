@@ -4,7 +4,7 @@
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
-:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `03_wifi_scan` have been updated.
+:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `05_wifi_tx_power` have been updated.
 
 **Table of Contents**
 <!-- TOC -->
@@ -97,11 +97,11 @@ The IDE will automatically install the platform first time it is used. Because o
 | Project | NB |Purpose |
 | ---     |:---:| --- |
 | **00_sys_info** | | Prints information about the mcu, memory, firmware size and the antenna configuration |
-| **01_pin_names** | 1,2 | Shows the content of `pins_arduino.h` and prints some defined macros |
-| **02_blink_pulse_led** | 2 | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
-| **03_scan_wifi** | 2,3 | Modified [WiFiScan](ttps://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino) example from older (3.1.1) esp32-arduino core |
-| **04_wifi_blackhole** | 4 | Looks at Wi-Fi station connect times |
-| **05_wifi_tx_power** | 2,4 | Wi-Fi TX power vs connect time |
+| **01_pin_names** |  | Shows the content of `pins_arduino.h` and prints some defined macros |
+| **02_blink_pulse_led** | | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
+| **03_scan_wifi** |  | Modified [WiFiScan](https://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino) example from older (3.1.1) esp32-arduino core |
+| **04_wifi_connect_time** | | Measure Wi-Fi connection times and signal strength |
+| **05_wifi_tx_power** |   | Wi-Fi TX power vs connect time |
 | **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
 | **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
 | ~~08_zigbee_switch~~|  | *use 14_zigbee_on_off_switch*  |
@@ -143,8 +143,8 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date | Change |
 | :---  |  :--- |
-| 2026-01-30 | Remove 04_wifi_blackhole and replace with 04_wifi_connect_time |
-[ 2026-01-29 | Update 03_scan_wifi |
+| 2026-01-30 | Remove 04_wifi_blackhole and replace with 04_wifi_connect_time. Update 05_wifi_tx_power. Add pioarduino info |
+| 2026-01-29 | Add MACs library. Update 03_scan_wifi |
 | 2026-01-29 | Removed old zigbee examples, added 00_sys_info project, updated 01_pin_names, 02_blink_pulse_led, and this file |
 | 2026-01-27 | Created v3.1.1_2025-01-24 tag and release |
 | 2025-01-24 | Confirmed that Zigbee_On_Off_Switch and Zigbee_On_Off_Light can be compiled with the most recent version of pioarduino in PlatformIO |
