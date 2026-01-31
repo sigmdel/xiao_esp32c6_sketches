@@ -1,6 +1,6 @@
 # XIAO ESP32C6 Sketches
 
-*January 29, 2026*
+*January 30, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
@@ -142,7 +142,9 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 02_blink_pulse_led
 
 | Date | Change |
-| :---  |  :--- | 
+| :---  |  :--- |
+| 2026-01-30 | Remove 04_wifi_blackhole and replace with 04_wifi_connect_time |
+[ 2026-01-29 | Update 03_scan_wifi |
 | 2026-01-29 | Removed old zigbee examples, added 00_sys_info project, updated 01_pin_names, 02_blink_pulse_led, and this file |
 | 2026-01-27 | Created v3.1.1_2025-01-24 tag and release |
 | 2025-01-24 | Confirmed that Zigbee_On_Off_Switch and Zigbee_On_Off_Light can be compiled with the most recent version of pioarduino in PlatformIO |
