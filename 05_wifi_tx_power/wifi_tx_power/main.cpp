@@ -1,20 +1,104 @@
-// Main module of wifi_tx_power
-// Copyright: see notice in wifi_tx_power.ino
+/*
+ *  See wifi_tx_power.ino for license and attribution.
+ */
 
 #include <Arduino.h>
 #include <WiFi.h>
+
+#include "MACs.h"
 #include "secrets.h"
 
-#if defined(ARDUINO_XIAO_ESP32C6)
-  // The onboard ceramic antenna is used by default.
-  // Uncomment the following macro to use a connected external antenna.
-  //#define USE_EXTERNAL_ANTENNA
-  #define TITLE "Seeed XIAO ESP32C6"
-#else
-  #error "Unknown dev board"
+
+
+////// User configuration //////
+///
+///  Define this when using XIAO ESP32C6 with a connected external antenna 
+///#define USE_EXTERNAL_ANTENNA 
+///
+///  Define timeout in milliseconds while waiting to connect to the Wi-Fi network
+///#define TIMEOUT 120000
+///
+///  If it is necessary to adjust the WIFI TX_POWER (super mini esp32c3) specify the 
+///  wifi_power_t value. Find all possible values here 
+///  https://github.com/espressif/arduino-esp32/blob/master/libraries/WiFi/src/WiFiGeneric.h
+///#define TX_POWER WIFI_POWER_11dBm
+///
+///  Rate of USB to Serial chip if used on the development board.
+///  This is ignored when the native USB peripheral of the 
+///  ESP SoC is used.
+#define SERIAL_BAUD 115200
+///
+///  Time in milliseconds to wait after Serial.begin() in 
+///  the setup() function. If not defined, it will be set
+///  to 5000 if running in the PlaformIO IDE to manually switch
+///  to the serial monitor otherwise to 2000 if an native USB 
+///  peripheral is used or 1000 if a USB-serial adpater is used.
+///#define SERIAL_BEGIN_DELAY 10000
+///
+//////////////////////////////////
+
+#if !defined(ESP32)
+  #error An ESP32 based board is required
 #endif  
 
-#define TIMEOUT 120000   // 2 minutes, time until connection deemed impossible
+#if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 3, 6))    
+  #error ESP32 Arduino core version 3.3.6 or newer needed
+#endif
+
+//---- Identify the ESP32 board and antenna ----
+
+#if defined(NOLOGO_ESP32C3_SUPER_MINI)
+  #define TITLE "NOLOGO_ESP32C3_SUPER_MINI"
+  #define ANTENNA "ONBOARD CERAMIC"
+  #warning Some ESP32C3 Super Mini models will only connect with an adjustment of the TX Power level, if at all
+#elif defined(ARDUINO_XIAO_ESP32C3)
+  #define TITLE "XIAO_ESP32C3"
+  #define ANTENNA "V1.2 FPC"
+  //#elif defined(ARDUINO_XIAO_ESP32C5)  // not yet supported
+  //  #define TITLE "XIAO_ESP32C5"
+  //  #define ANTENNA "A-01 FPC"
+#elif defined(ARDUINO_XIAO_ESP32C6)
+  // The onboard ceramic antenna is used by default.
+  #define TITLE "XIAO ESP32C6"
+  #ifdef USE_EXTERNAL_ANTENNA 
+    #define ANTENNA "EXTERNAL"
+    #warning Connect the external antenna before running this sketch
+  #else
+    #define ANTENNA "ONBOARD CERAMIC"
+  #endif
+#elif defined(ARDUINO_XIAO_ESP32S3)
+  #define TITLE "XIAO_ESP32S3"
+  #define ANTENNA "V1.2 FPC"
+#elif defined(ARDUINO_ESP32S3_DEV)
+  #if defined(WROOM_DUAL_USB)
+    #define TITLE "ESP32S3_WROOM"
+    #define ANTENNA "PCB TRACE"
+  #elif defined(SUPER_MINI_S3)
+    #define TITLE "SUPER_MINI_S3"
+    #define ANTENNA "INTERNAL CERAMIC"
+    #warning May have to manually enable bootloader mode to upload the firmware and, after, to manually reset the board to return to normal operating mode
+    #warning in ArduinoIDE - select "ESP32S3 Dev" Module , then in Tools  USB CDC on Boot: "Enabled", PSRAM: "QSPI PSRAM"
+  #else 
+    #define TITLE "Unknown ESP32-S3 board"    
+    #define ANTENNA "Unknown"
+  #endif  
+#elif defined(ARDUINO_LOLIN_S2_MINI) 
+  #define TITLE "LOLIN_S2_MINI"   
+  #define ANTENNA  "PCB TRACE"
+#elif defined(ARDUINO_LOLIN32_LITE)
+  #define TITLE "LOLIN32_LITE"   
+  #define ANTENNA "PCB TRACE"
+#elif defined(ARDUINO_LILYGO_T_DISPLAY)  
+  #define TITLE "LILYGO_T_DISPLAY"
+  #define ANTENNA "PCP TRACE"
+#else
+  #define TITLE "Unknown ESP32 board"
+  #define ANTENNA "Unknown"
+#endif  
+
+#ifndef TIMEOUT
+#define TIMEOUT 120000
+#endif
 
 /*
  from ~/.arduino15/packages/esp32/hardware/esp32/3.0.1/libraries/WiFi/src/WiFiGeneric.h
@@ -88,27 +172,27 @@ unsigned long dottime = 0;
 
 void start_connecting(int pwindex = 0) {
   if ((pwindex < 0) || (pwindex >= powerCount)) return;
-
+  
+  Serial.printf("\nTest #%d/%d\n", pwindex, powerCount-1);
   if (WiFi.isConnected()) {
-    Serial.println("Disconnecting");
+    Serial.print("Disconnecting...");
     WiFi.setAutoReconnect(false);
     WiFi.disconnect(true, true);
     while (WiFi.isConnected()) delay(5);
-    Serial.println("Disconnected");
-    delay(5000);
+    Serial.println(" disconnected. Wait 1 second.");
+    delay(1000);
   }
-  Serial.println();
   WiFi.mode(WIFI_STA);
   delay(25);
   int cpower = power[pwindex];
   WiFi.setTxPower((wifi_power_t)cpower);
   delay(25);
-  Serial.printf("Settting txPower to %s (%d)\n", powerstr[pwindex], cpower);
+  Serial.printf("Setting txPower to %s (%d)\n", powerstr[pwindex], cpower);
   int tpower = WiFi.getTxPower();
   if (tpower != cpower) Serial.println("Unable to set txPower");
   truepower[pwindex] = tpower;
   Serial.printf("Running pwindex %d, wanted txPower %s (%d), set to %d\n", pwindex, powerstr[pwindex], cpower, tpower);
-  Serial.println("Connecting to Wi-Fi network");
+  Serial.print("Connecting to Wi-Fi network... ");
  
   connect_time = millis();
   dottime = millis();
@@ -146,40 +230,41 @@ void getStatus(void) {
 
 
 void setup() {
-    Serial.begin();
-    delay(2000); // allow 2 seconds for the USB CDC stack to come up 
-
-    #if defined(ARDUINO_XIAO_ESP32C6)
-      #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
-	// reproduce initVariant() from ESP32 v3.0.4
-	uint8_t WIFI_ENABLE = 3;
-	uint8_t WIFI_ANT_CONFIG = 14;
-	// enable the RF switch
-	pinMode(WIFI_ENABLE, OUTPUT);
-	digitalWrite(WIFI_ENABLE, LOW);
-	// select the internal antenna
-	pinMode(WIFI_ANT_CONFIG, OUTPUT);
-	digitalWrite(WIFI_ANT_CONFIG, LOW);
-      #endif
-    
-      // same code for ESP32 v3.0.2 and up
-      #if defined(USE_EXTERNAL_ANTENNA)
-        digitalWrite(WIFI_ANT_CONFIG, HIGH);
-      #endif
-
-      Serial.print("Using ");
-      #ifdef USE_EXTERNAL_ANTENNA
-        Serial.print("an external");
-      #else
-        Serial.print("the internal");
-      #endif
-      Serial.println(" antenna.");
+  #if !defined(SERIAL_BEGIN_DELAY)
+    #if defined(PLATFORMIO)
+      #define SERIAL_BEGIN_DELAY 5000    // 5 seconds
+    #elif (ARDUINO_USB_CDC_ON_BOOT > 0)
+      #define SERIAL_BEGIN_DELAY 2000    // 2 seconds
+    #else
+      #define SERIAL_BEGIN_DELAY 1000    // 1 second
     #endif
- 
-    WiFi.mode(WIFI_STA);
-    delay(25);
-    power[0] = WiFi.getTxPower();  // default tx power on boot
-    start_connecting(0);
+  #endif 
+
+  #if (ARDUINO_USB_CDC_ON_BOOT > 0)
+  Serial.begin();
+  delay(SERIAL_BEGIN_DELAY);
+  #else 
+  Serial.begin(SERIAL_BAUD);
+  delay(SERIAL_BEGIN_DELAY);
+  Serial.println();
+  #endif  
+
+  #if defined(USE_EXTERNAL_ANTENNA) && defined(ARDUINO_XIAO_ESP32C6)
+    //pinMode(WIFI_ANT_CONFIG, OUTPUT); //done in .../variants/XIAO_ESP32C6/variant.cpp
+    digitalWrite(WIFI_ANT_CONFIG, HIGH);
+  #endif
+
+  Serial.println("\n\nProject: wifi_tx_power");
+  Serial.println("Purpose: Measure time to connect to a WiFi network as a function of WiFi TX power");
+  Serial.printf("  Board: %s\n", TITLE);
+  Serial.printf("STA MAC: %s\n", STA_MAC_STR);
+  Serial.printf("Antenna: %s\n", ANTENNA);
+  Serial.printf("Network: %s\n", ssid);
+
+  WiFi.mode(WIFI_STA);
+  delay(25);
+  power[0] = WiFi.getTxPower();  // default tx power on boot
+  start_connecting(0);
 }
 
 int txIndex = 0;
@@ -199,7 +284,7 @@ void loop() {
   if (WiFi.isConnected()) {
     etime = millis() - connect_time;
     delay(1500); // see wifi_blackhole
-    Serial.print("\nWiFi is connected with IP address: ");
+    Serial.print(" connected with IP address: ");
     Serial.println(WiFi.localIP());
     Serial.printf("Time to connect: %lu ms\n", etime);
     ctimes[txIndex] = etime;
@@ -214,7 +299,7 @@ void loop() {
   if (millis() - connect_time > TIMEOUT) {
     Serial.printf("\nNot connected after %d ms\n", TIMEOUT);
     getStatus();
-    ctimes[txIndex] = -1;
+    ctimes[txIndex] = 2*TIMEOUT;
     txIndex++;
     if (txIndex >= powerCount) return;
     Serial.println("Retrying in 5 seconds with different txPower");
