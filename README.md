@@ -1,10 +1,10 @@
 # XIAO ESP32C6 Sketches
 
-*January 30, 2026*
+*February 7, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
-:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `05_wifi_tx_power` have been updated.
+:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `06_async_web_led` have been updated.
 
 **Table of Contents**
 <!-- TOC -->
@@ -143,6 +143,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date | Change |
 | :---  |  :--- |
+| 2026-02-07 | Update the configuration files and the 06_async_web_led |
 | 2026-01-30 | Remove 04_wifi_blackhole and replace with 04_wifi_connect_time. Update 05_wifi_tx_power. Add pioarduino info |
 | 2026-01-29 | Add MACs library. Update 03_scan_wifi |
 | 2026-01-29 | Removed old zigbee examples, added 00_sys_info project, updated 01_pin_names, 02_blink_pulse_led, and this file |
