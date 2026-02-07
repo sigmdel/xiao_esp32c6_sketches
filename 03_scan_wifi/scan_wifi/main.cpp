@@ -30,8 +30,8 @@
   #error An ESP32 based board is required
 #endif  
 
-#if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 3, 5))    
-  #error ESP32 Arduino core version 3.3.5 or newer needed
+#if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 3, 6))    
+  #error ESP32 Arduino core version 3.3.6 or newer needed
 #endif
 
 //---- Identify the ESP32 board and antenna ----
@@ -50,6 +50,9 @@
   #else
     #define ANTENNA "ONBOARD CERAMIC"
   #endif
+#elif defined(ARDUINO_XIAO_ESP32C3)
+  #define TITLE "Seeed XIAO ESP32C3"
+  #define ANTENNA "V1.2 FPC"
 #elif defined(ARDUINO_XIAO_ESP32S3)
   #define TITLE "XIAO_ESP32S3"
   #define ANTENNA "V1.2 FPC"
@@ -83,7 +86,8 @@ void setup() {
     digitalWrite(WIFI_ANT_CONFIG, HIGH);
   #endif
 
-  Serial.println("\n\nProject: Wi-Fi Scan");
+  Serial.println("\n\nProject: scan_wifi");
+  Serial.println("Purpose: List found Wi-Fi networks");
   Serial.printf("  Board: %s\n", TITLE);
   Serial.printf("STA MAC: %s\n", STA_MAC_STR);
   Serial.printf("Antenna: %s\n", ANTENNA);
@@ -98,6 +102,11 @@ void setup() {
     #endif  
     Serial.println("to scan the bands together and separately.\n");
   #endif
+
+  Serial.println("Starting Wi-Fi in STA(tion) mode");
+  WiFi.STA.begin();
+
+  Serial.println("Setup done");
 }
 
 void loop() {
