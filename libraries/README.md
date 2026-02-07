@@ -1,27 +1,52 @@
 # Additional Libraries
 
-Many sketcthes use the MACs library to display one of the various MAC addresses an ESP can have. Since it is derived from an example in the ESP32 Arduino Core by Espressif, it is released under the LGPL-2.1 licence. 
+## MACs
 
-The `async_web_led` sketch is dependant on two libraries
+Many sketches use the MACs library to display one of the various MAC addresses an ESP can have. 
 
-  1. [AsyncTCP](https://github.com/me-no-dev/AsyncTCP)
-  2. [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer)
+Since it is derived from an example in the ESP32 Arduino Core by Espressif, it is released under the LGPL-2.1 licence. 
 
-For about five years, the ESPAsyncWebServer library authored by Hristo Gochkov, was not being updated. Over that period it became incompatible with newer versions of the ESP32 Arduino core which prompted many developers to fork the project and update it in a rather haphazard way. It became difficult to locate a correct version to use in that period. The developers of the Arduino IDE and PlatformIO appear to have tried to solve the situation by offering to install many forks of the libraries, without much guidance to the user on which version would be best.
+## ESP32Async Libraries 
 
-A couple of months ago, version 1.2.4 of ESPAsyncWebServer compatible with ESP32 Arduino 3.0.0 was released. Since it is also compatible with the ESP32-C6, I have decided to use the "root" version of the library. Unfortunately, the Arduino Library Manager does not provide access to that version. Consequently, a manual installation of the libraries is required. While it is not particularly difficult to do, it seemed better to provide a **minimalist copy** of each the libraries in this repository in order to make it self-contained. **Please do not redistribute these files and always return to the original source when using the libraries in other projects.**
+The `async_web_led` sketch is dependent on two libraries from ESP32Async
 
-It is still necessary to configure the Arduino IDE so that it can find the libraries. 
+  1. [AsyncTCP](https://github.com/ESP32Async/AsyncTCP) version 3.4.10 by ESP32Async
+  2. [ESPAsyncWebServer](https://github.com/ESP32Async/ESPAsyncWebServer) version 3.9.6 by ESP32Async
+
+The period of divergent if not disparate development of the async TCP and web server libraries seems to be coming to an end. The me-no-dev repositories have been archived. It is clearly indicated that the project is now in the hands of the ESP32Async group. Mathieu Carbou is actively maintaining both of these new repositories. The group's version of the libraries is compatible with the latest pioarduino ESP 32 platform and the most recent esp32 Arduino core. In other words, there is no real need for local copies of these two libraries. They are provided only as a convenience to those wanting to run the sketches in this repository with a minimum of fuss. 
+
+What is provided is a pared down version without example files and with modified properties to ensure that nothing new or additional is automatically downloaded.
+
+**Please do not redistribute the content of these directories and always return to the original source when using the libraries in other projects.**
+
+Each of the libraries is released under the LGPL-3.0 licence. Its terms can be found in `libraries/AsyncTCP/LICENSE`.
+
+### Arduino IDE
+
+To use the local libraries in the Arduino IDE, it is necessary to configure the Arduino IDE so that it can find the libraries. 
 
   1. Open the `async_web_led` sketch in the IDE.
 
   2. Go to the Preferences window of the IDE: **File » Preferences**
 
-  3. Enter the directory containing `06_async_web_led` directory in  `Sketchbok location:` ![](location.jpg)  
+  3. Enter the directory containing the `06_async_web_led` directory in  `Sketchbok location:`  ![](location.jpg)  
   It would be a good to jot down the previous sketchbook location beforehand in order to restore it when done with the example sketch.
 
   4. Click on the `OK` button.
 
-The Arduino IDE will automatically include any libraries found in the `libraries`. Be warned that it will want to install "updates" of these two libraries. Many of the offerings proposed by the IDE did not work, but the situation may have evolved since they were tried. It may be wise to forego updating when first testing the `async_web_led` sketch.
+The Arduino IDE will automatically include any libraries found in the `libraries`. If prompted, do not "update" either of these two libraries  when first testing the `async_web_led` sketch.
 
-Each of the libraries is released under the LGPL-3.0 licence. Its terms can be found in `libraries/AsyncTCP/LICENSE`.
+If the current libraries from the ESP32Async organization are to be used, simply delete the two directories `Async_TCP` and `ESPAsyncWebServer`. Then install the libraries with the Arduino IDE Library manager (Tools/Manage Libraries...). 
+Search for `ESP32Async` and install the latest version of both **Async TCP** and **ESP Async WebServer** by ESP32Async. This will recreate two directories in the `libraries` directory assuming that the Sketchbook location has been set as described above.
+
+### pioarduino/PlatformIO IDE
+
+The `platformion.ini` configuration file contains an entry to the local libraries directory: `lib_dir = ../libraries`. If the current libraries from the ESP32Async organization are to be used, remove that entry, and add library dependency values.
+
+```ini
+lib_compat_mode = strict
+lib_ldf_mode = chain
+lib_deps =
+  ESP32Async/AsyncTCP
+  ESP32Async/ESPAsyncWebServer     
+```
