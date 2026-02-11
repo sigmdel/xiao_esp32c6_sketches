@@ -56,55 +56,105 @@ void iopins(void) {
   Serial.printf("    WIFI_ENABLE = %d (RF switch power enable I/O)\n", WIFI_ENABLE);
   Serial.printf("WIFI_ANT_CONFIG = %d (RF switch select control I/O)\n", WIFI_ANT_CONFIG);
   
-  Serial.println("\nOther macros"); 
-  Serial.printf("USB_VID          defined = 0x%04x\n", USB_VID);
-  Serial.printf("USB_PID          defined = 0x%04x\n", USB_PID);
-  Serial.printf("USB_MANUFACTURER defined = \"%s\"\n", USB_MANUFACTURER);
-  Serial.printf("USB_PROUCT       defined = \"%s\"\n", USB_PRODUCT);
-  Serial.printf("USB_SERIAL       defined = \"%s\"\n", USB_SERIAL);
+  Serial.println("\nOther macros defined in pins_arduino.h"); 
+  Serial.printf("USB_VID = 0x%04x\n", USB_VID);
+  Serial.printf("USB_PID = 0x%04x\n", USB_PID);
+  Serial.printf("USB_MANUFACTURER = \"%s\"\n", USB_MANUFACTURER);
+  Serial.printf("USB_PRODUCT = \"%s\"\n", USB_PRODUCT);
+  Serial.printf("USB_SERIAL = \"%s\"\n", USB_SERIAL);
   #ifdef LED_BUILTIN
-  Serial.printf("LED_BUILTIN      defined = %d\n", LED_BUILTIN);
+  Serial.printf("LED_BUILTIN = %d\n", LED_BUILTIN);
   #else
     #error LED_BUILTIN should be defined
   #endif
   #ifdef BUILTIN_LED
-  Serial.printf("BUILTIN_LED      defined = %d //deprecated, use LED_BUILTIN\n", BUILTIN_LED);
+  Serial.printf("BUILTIN_LED = %d //deprecated, use LED_BUILTIN\n", BUILTIN_LED);
   #else
     #error BUILTIN_LED should be defined
   #endif
+
+  Serial.println("\nOther macro defined in esp32-hal.h");
   #ifdef BOOT_PIN
-  Serial.printf("BOOT_PIN         defined = %d\n", BOOT_PIN);
+  Serial.printf("BOOT_PIN = %d\n", BOOT_PIN);
   #else
     #error BOOT_PIN should be defined in esp32-hal.h
   #endif
   
-  Serial.println("\nPackage macro");
-  #ifdef ESP32
-  Serial.println("ESP32 defined");
+  Serial.println("\nBuild macros");
+ 
+  #ifdef PLATFORMIO
+  Serial.printf("PLATFORMIO = %d\n", PLATFORMIO);
+  #else
+    Serial.println("PLATFORMIO not defined"); // must be in Arduino IDE
+  #endif    
+ 
+  #ifdef ARDUINO 
+  Serial.printf("ARDUINO = %d\n", ARDUINO);
+  #else
+    #error ARDUINO should be defined
+  #endif
+ 
+  #ifdef ESP_PLATFORM
+  Serial.println("ESP_PLATFORM");
+  #else
+    #error ESP32_PLATFORM should be defined
+  #endif
+ 
+  #ifdef ESP32  // already verified
+  Serial.println("ESP32");
   #else
     #error ESP32 should be defined
   #endif
+ 
+  #ifdef IDF_VER
+  Serial.printf("IDF_VER = \"%s\"\n", IDF_VER);
+  #else
+    #error IDF_VER should be defined
+  #endif  
+ 
+  #ifdef ARDUINO_ARCH_ESP32
+  Serial.println("ARDUINO_ARCH_ESP32");
+  #else
+    #error ARDUINO_ARCH_ESP32 should be defined
+  #endif
+  
+  #ifdef ARDUINO_BOARD
+  Serial.printf("ARDUINO_BOARD = \"%s\"\n", ARDUINO_BOARD);
+  #else
+    #error  ARDUINO_BOARD should be defined
+  #endif
 
-  Serial.println("\nBoard macros");
+  #ifdef ARDUINO_VARIANT
+  Serial.printf("ARDUINO_VARIANT = \"%s\"\n", ARDUINO_VARIANT);
+  #else
+    #error  ARDUINO_VARIANT should be defined
+  #endif
+
   #ifdef ARDUINO_XIAO_ESP32C6
-  Serial.println("ARDUINO_XIAO_ESP32C6 defined");
+  Serial.println("ARDUINO_XIAO_ESP32C6");
   #else
     #error ARDUINO_XIAO_ESP32C6 should be defined
   #endif
 
-  Serial.println("\nNative USB support");
+
   #ifdef ARDUINO_USB_CDC_ON_BOOT 
-  Serial.printf("ARDUINO_USB_CDC_ON_BOOT defined = %d\n", ARDUINO_USB_CDC_ON_BOOT);
+  Serial.printf("ARDUINO_USB_CDC_ON_BOOT = %d\n", ARDUINO_USB_CDC_ON_BOOT);
   #else
     #error ARDUINO_USB_CDC_ON_BOOT=1 should be defined
   #endif                                                       
+
+  #ifdef ARDUINO_USB_MODE 
+  Serial.printf("ARDUINO_USB_MODE = %d\n", ARDUINO_USB_MODE);
+  #else
+    #error ARDUINO_USB_MODE=1 should be defined
+  #endif                                                        
 }
 
 void setup() {
   // Delay to allow for the initialization of the native USB peripheral
   // and some time for the IDE to reconnect 
   #if defined(PLATFORMIO)
-    #define SERIAL_BEGIN_DELAY 5000    // 5 seconds
+    #define SERIAL_BEGIN_DELAY 8000    // 8 seconds
   #else
     #define SERIAL_BEGIN_DELAY 2000    // 2 second
   #endif 
@@ -112,7 +162,7 @@ void setup() {
   Serial.begin();
   delay(SERIAL_BEGIN_DELAY);
   Serial.println("\n\nProject: pin_names.ino");
-  Serial.println("Purpose: Print I/O Pin Names, GPIO Numbers, etc.");
+  Serial.println("Purpose: Print I/O Pin Names, GPIO Numbers, Macros etc.");
   Serial.println("  Board: XIAO ESP32C6");
 }
 
