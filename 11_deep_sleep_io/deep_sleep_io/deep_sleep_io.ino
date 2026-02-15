@@ -1,31 +1,31 @@
 /*
  * deep_sleep_io.ino
- * Puts XIAO ESP32C6 in deep sleep mode, with I/O activated wakeups.
+ * Wake the XIAO ESP32C6 from deep sleep mode with a high or low signal to i/o pins
  *
  * This is a stub to satisfy the Arduino IDE, the source code is in
- * the file main.cpp in the same directory.
+ * the main.cpp file in the same directory.
  *
  * This sketch will compile in the Arduino IDE
  *
  *  1- Add https://espressif.github.io/arduino-esp32/package_esp32_index.json
  *     in the Additional Boards Manager URLS in the Preferences window.
- *  2- Install platform esp32 by Espressif version 3.0.2 or newer with the Boards Manager
+ *  2- Install platform esp32 by Espressif version 3.3.6 or newer with the Boards Manager
  *  3- Select the XIAO_ESP32C6 board
- * 
- * References: 
- *   ExternalWakeUp.ino
- *   @ https://github.com/espressif/arduino-esp32/blob/master/libraries/ESP32/examples/DeepSleep/ExternalWakeUp/ExternalWakeUp.ino
- *   by Pranav Cherukupalli <cherukupallip@gmail.com>
- *
- *   15uA. with Xiao ESP32C6 with PPK2 while sleeping BASIC example
- *   @ https://forum.seeedstudio.com/t/15ua-with-xiao-esp32c6-with-ppk2-while-sleeping-basic-example/276412
- *   by PJ Glasso. 
  *
  * Michel Deslierres
- * July 9, 2024
+ * Jan 20, 2026
  *
- * Copyright 2024, Michel Deslierres. No rights reserved, this code is in the public domain.
+ * Based on Deep sleep mode
+ *  @https://wiki.seeedstudio.com/xiao_esp32c5_getting_started/#deep-sleep-mode
+ *
+ * The XIAO ESP32-C5 features deep sleep and wake-up functions. This example utilizes a 
+ * high-level trigger on pin D0 to wake the device from deep sleep. It is important to 
+ * note that this is a configurable option, as the hardware supports both high-level and 
+ * low-level triggers to accommodate different circuit designs.
+ *
+ * Copyright 2026, Michel Deslierres. No rights reserved, this code is in the public domain.
  * In those jurisdictions where this may be a problem, the BSD Zero Clause License applies.
- * <https://spdx.org/licenses/0BSD.html> */
- // SPDX-License-Identifier: 0BSD                
- 
+ * <https://spdx.org/licenses/0BSD.html>
+ */
+// SPDX-License-Identifier: 0BSD
+
