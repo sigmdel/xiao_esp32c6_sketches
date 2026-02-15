@@ -1,11 +1,23 @@
 /*
- *  This sketch is based on WiFiScan from the ESP32 Arduino core
- *  Source: https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi/examples/WiFiScan
- *  This appears to be released under the GNU LESSER GENERAL PUBLIC LICENSE 
- *    see: https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md
+ *  See xiao32c6_antenna.ino for license and attribution.
  */
+
+/*
+ * It is not recommended to use the Wi-Fi capabilities of an ESP32 without a connected
+ * antenna. However, this sketch does not use the radio to transmit any signals and 
+ * it does not appear that any damage has been caused when scanning using the RF switch
+ * when set to use the external antenna without one being connected. Nevertheless, no 
+ * guarantee is offered on that count, or any other for that matter.
+*/ 
+
 #include <Arduino.h>
 #include "WiFi.h"
+
+#include "MACs.h"
+
+#ifndef ARDUINO_XIAO_ESP32C6
+#error Must be using a XIAO ESP32C6 board only
+#endif
 
 #define INTERNAL_ANTENNA LOW
 #define EXTERNAL_ANTENNA HIGH
@@ -164,17 +176,25 @@ void setup() {
   WiFi.disconnect();
   delay(2000);
 
+
   // Time to start serial terminal (such as picocom) to capture test resulsts
-  int startdelay = 20;
+  //   $ picocom --imap lfcrlf /dev/ttyACM0
+  int startdelay = 8;
   for (int i=startdelay; i > 0; i--) {
     Serial.printf("Test will begin in %d seconds\n", i);
     delay(1000);
   }
 
+  Serial.println("\n\nProject: xiao32c6_antenna");
+  Serial.println("Purpose: Testing the antenna selection switch");
+  Serial.println("  Board: XIAO ESP32C6");
+  Serial.printf("STA MAC: %s\n", STA_MAC_STR);
+  Serial.printf("ESP32 Arduino version %s\n", ESP_ARDUINO_VERSION_STR);
+
+
   // Start with a scan without modifying the IO pin 3 and 14 to confirm 
-  // that initVarian() in ESP32 core 3.0.4+ modifies the use of the RF switch
-    Serial.println("\nInitial scan with default antenna settings");
-  Serial.printf("\in ESP32 Arduino version %s\n", ESP_ARDUINO_VERSION_STR);
+  // that initVariant() in ESP32 core 3.0.4+ modifies the use of the RF switch
+  Serial.println("\nInitial scan with default antenna settings");
   Serial.println("--------------------------------------------");
   
   doScan(0);

@@ -17,7 +17,12 @@
  * Michel Deslierres
  * August 5, 2024
  *
- * Copyright 2024, Michel Deslierres. No rights reserved, this code is in the public domain.
+ * This sketch is based on WiFiScan from the ESP32 Arduino core
+ * Source: https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi/examples/WiFiScan
+ * This appears to be released under the GNU LESSER GENERAL PUBLIC LICENSE
+ *    see: https://github.com/espressif/arduino-esp32/blob/master/LICENSE.md
+ *
+ * Copyright 2024-2026, Michel Deslierres. No rights reserved, this code is in the public domain.
  * In those jurisdictions where this may be a problem, the BSD Zero Clause License applies.
  * <https://spdx.org/licenses/0BSD.html> */
  // SPDX-License-Identifier: 0BSD

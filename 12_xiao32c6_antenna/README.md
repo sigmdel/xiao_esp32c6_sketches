@@ -51,4 +51,4 @@ void initVariant(void) {
 }
 ```
 
-The RF switch is enabled in software which I think confirms that there is not R22 to pull the gate of the MOSFET to ground. By my estimation, the last two statements were not needed, but it may be a good idea to set `WIFI_ANT_CONFIG` (= GPIO14) in OUTPUT mode so that a single `digitalWrite(WIFI_ANT_CONFIG, HIGH)` would suffice to select the external antenna in a user sketch. And if one sets a pin in OUTPUT mode, it is probably best to set a value at the same time.
+The RF switch is explicitly enabled in software which confirms that the R22 resistor that would pull the gate of the MOSFET to ground is not present. By my estimation, the last two statements were not needed, but it may be a good idea to set `WIFI_ANT_CONFIG` (= GPIO14) in OUTPUT mode so that a single `digitalWrite(WIFI_ANT_CONFIG, HIGH)` would suffice to select the external antenna in a user sketch. And if one sets a pin in OUTPUT mode, it is probably best to set a value at the same time.
