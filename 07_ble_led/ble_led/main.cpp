@@ -1,48 +1,94 @@
-// Main module of ble_led.ino
-// Copyright: see notice in ble_led.ino
+/*
+ *  See ble_led.ino for license and attribution.
+ */
 
 #include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
-// This is a simplified example which can use custom UUIDs in which case
-// the client will probably show the UUID for the service and characteristic
-// or it can use some more or less valid reserved UUID from the Bluetooth(R) 
-// Assigned Numbers document https://www.bluetooth.com/specifications/assigned-numbers/ 
-//
-#define USE_CUSTOM_UUIDS
+#include "MACs.h"
 
+
+////// User configuration //////
+///
+///  This is a simplified example. The BLE service UUID can be some more or less valid reserved 
+///  UUID from the Bluetooth(R) Assigned Numbers document 
+///  @ https://www.bluetooth.com/specifications/assigned-numbers/ 
+///
+#define SERVICE_UUID "1815" //"00001815-0000-1000-8000-00805F9B34FB"  // Automation IO Service
+///#define SERVICE_UUID "1812" //"00001812-0000-1000-8000-00805F9B34FB"  // Human Interface Device Service
+///#define SERVICE_UUID "181c" //"0000181c-0000-1000-8000-00805F9B34FB"  // User Data Service
+///#define SERVICE_UUID "57a81fc3-3c5f-4d29-80e7-8b074e34888c"  // custom UUID
+///
+/// Similarly with the characteritic UUID
+///
+#define CHARACTERISTIC_UUID "2BE2" //"00002BE2-0000-1000-8000-00805F9B34FB"  // Light Output
+///#define CHARACTERISTIC_UUID "2BO5" //"00002B05-0000-1000-8000-00805F9B34FB"  // Power 
+///#define CHARACTERISTIC_UUID "2eeae074-8955-47f7-9470-73f85112974f"  // custom UUID
+///
+///  The custom UUIDs were generated at https://www.guidgenerator.com/
+///  https://novelbits.io/uuid-for-custom-services-and-characteristics/
+///
+/// 
 #define BLUETOOTH_NAME  "BLE_LED"
+///
+///  Define this when using XIAO ESP32C6 with a connected external antenna 
+///#define USE_EXTERNAL_ANTENNA 
+///
+///  I/O pin of the LED to be flashed and pulsed, must be defined here if LED_BUILTIN not defined
+///#define LED_PIN  LED_BUILTIN
+///
+///  Signal level to turn the LED ON
+///#define LED_ON  LOW
+///
+///
+///  Rate of USB to Serial chip if used on the development board.
+///  This is ignored when the native USB peripheral of the 
+///  ESP SoC is used.
+#define SERIAL_BAUD 115200
+///
+///  Time in milliseconds to wait after Serial.begin() in 
+///  the setup() function. If not defined, it will be set
+///  to 5000 if running in the PlaformIO IDE to manually switch
+///  to the serial monitor otherwise to 2000 if an native USB 
+///  peripheral is used or 1000 if a USB-serial adpater is used.
+///#define SERIAL_BEGIN_DELAY 10000
+///
+//////////////////////////////////
 
-#ifdef USE_CUSTOM_UUIDS
-  // Custom UUID for service and characteristic must not conflict with a reserved UUID 
-  // that is no number in the XXXXXXXX-0000-1000-8000-00805F9B34FB range
-  // Generated at https://www.guidgenerator.com/
-  // https://novelbits.io/uuid-for-custom-services-and-characteristics/
-  #define SERVICE_UUID        "57a81fc3-3c5f-4d29-80e7-8b074e34888c"
-  #define CHARACTERISTIC_UUID "2eeae074-8955-47f7-9470-73f85112974f"
-#else 
-  #define SERVICE_UUID        "1815" //"00001815-0000-1000-8000-00805F9B34FB"  // Automation IO Service
-                            //"1812" //"00001812-0000-1000-8000-00805F9B34FB"  // Human Interface Device Service
-                            //"181c" //"0000181c-0000-1000-8000-00805F9B34FB"  // User Data Service
-  #define CHARACTERISTIC_UUID "2BE2" //"00002BE2-0000-1000-8000-00805F9B34FB"  // Light Output
-                            //"2BO5" //"00002B05-0000-1000-8000-00805F9B34FB"  // Power 
-#endif                          
+#if !defined(ESP32)
+  #error An ESP32 based board is required
+#endif  
 
-#if defined(BUILTIN_LED)
-  const uint8_t ledPin = BUILTIN_LED;
-  const uint8_t ledOn = LOW;
+#if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 3, 6))    
+  #error ESP32 Arduino core version 3.3.6 or newer needed
+#endif
+
+
+#ifdef LED_PIN
+static uint8_t ledPin = LED_PIN;
 #else
-  #error "ledPin not defined"
+static uint8_t ledPin = LED_BUILTIN;   // XIAO yellow LED cathode connected to digital pin
+#endif
+
+#ifdef LED_ON
+static uint8_t ledOn = LED_ON;       
+#else
+static uint8_t ledOn = LOW;            // XIAO yellow LED anode connected to 3.3V via 1.5K resistor
 #endif
 
 #if defined(ARDUINO_XIAO_ESP32C6)
-  // The onboard ceramic antenna is used by default.
-  // Uncomment the following macro to use a connected external antenna.
-  //#define USE_EXTERNAL_ANTENNA
+  #define TITLE "Seeed XIAO ESP32C6"
+  #ifdef USE_EXTERNAL_ANTENNA
+    #define ANTENNA "External antenna"
+  #else
+    #define ANTENNA "Onboard ceramic"
+  #endif    
+#elif defined(ARDUINO_BOARD)
+  #define TITLE ARDUINO_BOARD
 #else
-  #undef USE_EXTERNAL_ANTENNA
+  #define TITLE "Unknown ESP32 board"
 #endif    
 
 BLEServer *pServer = nullptr;
@@ -64,8 +110,9 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
-class WriteCallbacks : public BLECharacteristicCallbacks {
+class MyCharacteristicCallback : public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *pCharacteristic) {
+    Serial.println("OnWrite entered");
     String value = pCharacteristic->getValue().c_str();
     if (value == "on") {      
       digitalWrite(ledPin, ledOn); 
@@ -77,53 +124,67 @@ class WriteCallbacks : public BLECharacteristicCallbacks {
       Serial.printf("Received non valid \"%s\" value \n", value.c_str());
     }  
   }
+
+  void onNotify(BLECharacteristic *pCharacteristic) {
+    Serial.println("OnNotify entered");
+    String value = pCharacteristic->getValue().c_str();
+    if (value == "on") {      
+      digitalWrite(ledPin, ledOn); 
+      Serial.println("Received \"on\" value");
+    } else if(value == "off"){
+      digitalWrite(ledPin, 1-ledOn);
+      Serial.println("Received \"off\" value");
+    } else {
+      Serial.printf("Received non valid \"%s\" value \n", value.c_str());
+    } 
+  }
 };
 
 
 void setup() {
-  #if defined(ARDUINO_ESP32C6)
-  Serial.begin();
-  delay(2000); // should be enough for the USB CDC to initialize
-  #else
-  Serial.begin(115200);
-  while (!Serial) delay(10);
-  #endif
-
-  Serial.println("\nSetup:");
-
-  #if defined(ARDUINO_XIAO_ESP32C6)
-    #if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 0, 4)) 
-      // reproduce initVariant() from ESP32 v3.0.4
-      uint8_t WIFI_ENABLE = 3;
-      uint8_t WIFI_ANT_CONFIG = 14;
-      // enable the RF switch
-      pinMode(WIFI_ENABLE, OUTPUT);
-      digitalWrite(WIFI_ENABLE, LOW);
-      // select the internal antenna
-      pinMode(WIFI_ANT_CONFIG, OUTPUT);
-      digitalWrite(WIFI_ANT_CONFIG, LOW);
-    #endif
-   
-    // same code for ESP32 v3.0.2 and up
-    #if defined(USE_EXTERNAL_ANTENNA)
-      digitalWrite(WIFI_ANT_CONFIG, HIGH);
-    #endif
-
-    Serial.print("Using ");
-    #ifdef USE_EXTERNAL_ANTENNA
-      Serial.print("an external");
+  #if !defined(SERIAL_BEGIN_DELAY)
+    #if defined(PLATFORMIO)
+      #define SERIAL_BEGIN_DELAY 5000    // 5 seconds
+    #elif (ARDUINO_USB_CDC_ON_BOOT > 0)
+      #define SERIAL_BEGIN_DELAY 2000    // 2 seconds
     #else
-      Serial.print("the internal");
+      #define SERIAL_BEGIN_DELAY 1000    // 1 second
     #endif
-    Serial.println(" antenna.");
+  #endif 
+
+  #if (ARDUINO_USB_CDC_ON_BOOT > 0)
+  Serial.begin();
+  delay(SERIAL_BEGIN_DELAY);
+  #else 
+  Serial.begin(SERIAL_BAUD);
+  delay(SERIAL_BEGIN_DELAY);
+  Serial.println();
+  #endif  
+
+  #if defined(USE_EXTERNAL_ANTENNA) && defined(ARDUINO_XIAO_ESP32C6)
+    //pinMode(WIFI_ANT_CONFIG, OUTPUT); //done in .../variants/XIAO_ESP32C6/variant.cpp
+    digitalWrite(WIFI_ANT_CONFIG, HIGH);
   #endif
+
+  Serial.println("\n\nProject: ble_led");
+  Serial.println("Purpose: Toggle a LED with a Bluetooth LE application");
+  Serial.printf("  Board: %s\n", TITLE);
+  #ifdef ANTENNA
+  Serial.printf("Antenna: %s\n", ANTENNA);
+  #endif
+  Serial.printf(" BT MAC: %s\n", BT_MAC_STR);
 
   Serial.println("Initializing LED");
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, 1-ledOn);
 
-  Serial.println("Initializing BLEDevice");
-  BLEDevice::init(BLUETOOTH_NAME);
+  Serial.printf("Initializing BLEDevice %s\n", BLUETOOTH_NAME);
+  if (!BLEDevice::init(BLUETOOTH_NAME)) {
+    Serial.println("BLE initialization failed");
+    Serial.println("Will restart in 5 seconds;");
+    delay(5000);
+    ESP.restart();
+  }  
 
   Serial.println("Creating a BLE server");
   pServer = BLEDevice::createServer();
@@ -135,18 +196,18 @@ void setup() {
   Serial.println("Adding a BLE characteristic");
   pCharacteristic = pService->createCharacteristic(
                       CHARACTERISTIC_UUID,
-                      BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE);
-  pCharacteristic->setCallbacks(new WriteCallbacks);
+                      BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE | BLECharacteristic::PROPERTY_NOTIFY);
+  pCharacteristic->setCallbacks(new MyCharacteristicCallback);
 
   Serial.println("Starting BLE service");
   pService->start();
 
-  Serial.println("Add advertiser");
+  Serial.println("Adding an advertiser");
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
   pAdvertising->addServiceUUID(pService->getUUID());
   pAdvertising->setScanResponse(true);
 
-  Serial.println("Start BLE advertising");
+  Serial.println("Starting BLE advertising");
   BLEDevice::startAdvertising();
 
   Serial.println("\nSetup completed");
@@ -155,9 +216,27 @@ void setup() {
 unsigned long timer = 0;
 
 void loop() {
+  /*
   if (millis() - timer > 10000) {
     if (deviceConnected) {
       Serial.println("Send 'on' or 'off' string to control the LED");
+    } else {
+      Serial.print("Connect to ");
+      Serial.print(BLUETOOTH_NAME);
+      Serial.print(" (address: ");
+      Serial.print(BLEDevice::getAddress().toString().c_str());
+      Serial.println(")");
+    }  
+    timer = millis();
+  }
+   */
+  if (millis() - timer > 10000) {
+    int ledStatus = digitalRead(ledPin);  
+    digitalWrite(ledPin, 1-ledStatus); // toggle LED
+    if (deviceConnected) {
+      pCharacteristic->setValue((ledStatus) ? "on" : "off");
+      //pCharacteristic->notify();
+      pCharacteristic->indicate();
     } else {
       Serial.print("Connect to ");
       Serial.print(BLUETOOTH_NAME);
