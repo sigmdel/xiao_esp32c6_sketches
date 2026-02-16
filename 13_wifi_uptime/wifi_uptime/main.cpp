@@ -50,7 +50,7 @@
   #define TITLE "ESP32C3 SuperMini"
 #elif defined(ARDUINO_BOARD)
   #define TITLE ARDUINO_BOARD
-#else²  
+#else
   TITLE "Unknown ESP32 board"
 #endif
 
