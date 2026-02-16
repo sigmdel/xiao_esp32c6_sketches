@@ -1,42 +1,86 @@
-// Copyright 2024 Espressif Systems (Shanghai) PTE LTD
-//
-// See Zigbee_On_Off_Switch.ino for license 
-// 
-// Source: 
-// https://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/Zigbee/examples/Zigbee_On_Off_Switch/Zigbee_On_Off_Switch.ino
+/*
+ * See Zibbee_On_Off_Switch.ino for license and attribution
+ */
 
-#ifndef ZIGBEE_MODE_ZCZR
-#error "Zigbee coordinator mode is not selected in Tools->Zigbee mode"
-#endif
-
+#include <Arduino.h>
 #include "Zigbee.h"
 
-//<Configuration> ---------------------
+#include "MACs.h"
 
-#define GPIO_INPUT_IO_TOGGLE_SWITCH BOOT_PIN  // I/O pin 9 on ESP32-C6 and ESP32-H2
-
-#if defined(ARDUINO_USB_CDC_ON_BOOT)          // no discrete USB-to-serial adapter
-  #define SERIAL_BAUD
-#else
-  #define SERIAL_BAUD 115200
+#ifndef ZIGBEE_MODE_ZCZR
+  #error "Zigbee coordinator mode is not selected in Tools->Zigbee mode"
 #endif
+
+//////// User configuration //////
+///
+///  Define this when using XIAO ESP32C6 with a connected external antenna 
+///#define USE_EXTERNAL_ANTENNA 
+///
+///  GPIO pin used by a push button that is connected to GROUND.
+///  Define here to overide the automatic use of the BOOT button.
+///#define BOOT_PIN 9
+///
+///  Rate of USB to Serial chip if used on the development board.
+///  This is ignored when the native USB peripheral of the 
+///  ESP SoC is used.
+///
+#define SERIAL_BAUD 115200
+///
+///  Time in milliseconds to wait after Serial.begin() in 
+///  the setup() function. If not defined, it will be set
+///  to 5000 if running in the PlaformIO IDE to manually switch
+///  to the serial monitor otherwise to 2000 if an native USB 
+///  peripheral is used or 1000 if a USB-serial adpater is used.
+///*define SERIAL_BEGIN_DELAY 8000
+///
+//////////////////////////////////
+
+
+#if !defined(ESP32)
+  #error An ESP32 based board is required
+#endif  
+
+#if (ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(3, 3, 6))    
+  #error ESP32 Arduino core version 3.3.6 or newer needed
+#endif 
+
+#if !defined(CONFIG_SOC_IEEE802154_SUPPORTED)
+  #error The SoC must support IEEE 802.15.4 (Zigbee)
+#endif
+
+//---- Identify the ESP32 board and antenna ----
 
 #if defined(ARDUINO_XIAO_ESP32C6)
   // The onboard ceramic antenna is used by default.
-  // Uncomment the following macro to use a connected external antenna.
-  //#define USE_EXTERNAL_ANTENNA
+  #define TITLE "Seeed XIAO ESP32C6"
+  #ifdef USE_EXTERNAL_ANTENNA 
+    #define ANTENNA "EXTERNAL"
+  #else
+    #define ANTENNA "ONBOARD CERAMIC"
+  #endif
+#elif defined(ARDUINO_BOARD)
+  #define TITLE ARDUINO_BOARD
 #else
-  #undef USE_EXTERNAL_ANTENNA
-#endif    
+  #define TITLE "Unknown ESP32 board"
+#endif        
 
-// Define this print to the console a test number at startup
-#define TEST_NO 1
 
-///</Configuration> ---------------------
+//---- sanity checks -----------------
+
+#if !defined(BOOT_PIN)
+  #error BOOT_PIN not defined
+#endif
+
+#if !(ARDUINO_USB_CDC_ON_BOOT > 0) && !defined(SERIAL_BAUD)
+  #error SERIAL_BAUD not defined
+#endif
+
+//</Configuration> ---------------------
 
 /* Zigbee switch configuration */
 #define SWITCH_ENDPOINT_NUMBER 5
 
+#define GPIO_INPUT_IO_TOGGLE_SWITCH BOOT_PIN
 #define PAIR_SIZE(TYPE_STR_PAIR)    (sizeof(TYPE_STR_PAIR) / sizeof(TYPE_STR_PAIR[0]))
 
 typedef enum {
@@ -66,12 +110,41 @@ static SwitchData buttonFunctionPair[] = {{GPIO_INPUT_IO_TOGGLE_SWITCH, SWITCH_O
 
 ZigbeeSwitch zbSwitch = ZigbeeSwitch(SWITCH_ENDPOINT_NUMBER);
 
+static bool light_state = false;
+
 /********************* Zigbee functions **************************/
 static void onZbButton(SwitchData *button_func_pair) {
   if (button_func_pair->func == SWITCH_ONOFF_TOGGLE_CONTROL) {
     // Send toggle command to the light
     Serial.println("Toggling light");
     zbSwitch.lightToggle();
+  }
+}
+
+static void onLightStateChange(bool state) {
+  if (state != light_state) {
+    light_state = state;
+    Serial.printf("Light state changed to %d\r\n", state);
+  }
+}
+
+/********************* Periodic task ***************************/
+void periodicTask(void *arg) {
+  while (true) {
+    // print the bound lights every 10 seconds
+    static uint32_t lastPrint = 0;
+    if (millis() - lastPrint > 10000) {
+      lastPrint = millis();
+      zbSwitch.printBoundDevices(Serial);
+    }
+
+    // Poll light state every second
+    static uint32_t lastPoll = 0;
+    if (millis() - lastPoll > 1000) {
+      lastPoll = millis();
+      zbSwitch.getLightState();
+    }
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
@@ -94,17 +167,44 @@ static void enableGpioInterrupt(bool enabled) {
 
 /********************* Arduino functions **************************/
 void setup() {
-  Serial.begin(SERIAL_BAUD);
-  delay(5000);
-  #ifdef TEST_NO
-  Serial.printf("Zigbee_On_Off_Switch, test #%d\n\n", TEST_NO); // 
+  #if !defined(SERIAL_BEGIN_DELAY)
+    #if defined(PLATFORMIO)
+      #define SERIAL_BEGIN_DELAY 5000    // 5 seconds
+    #elif (ARDUINO_USB_CDC_ON_BOOT > 0)
+      #define SERIAL_BEGIN_DELAY 2000    // 2 seconds
+    #else
+      #define SERIAL_BEGIN_DELAY 1000    // 1 second
+    #endif
   #endif 
+
+  #if (ARDUINO_USB_CDC_ON_BOOT > 0)
+  Serial.begin();
+  delay(SERIAL_BEGIN_DELAY);
+  #else 
+  Serial.begin(SERIAL_BAUD);
+  delay(SERIAL_BEGIN_DELAY);
+  Serial.println();
+  #endif  
+
+  #if defined(USE_EXTERNAL_ANTENNA) && defined(ARDUINO_XIAO_ESP32C6)
+    //pinMode(WIFI_ANT_CONFIG, OUTPUT);
+    digitalWrite(WIFI_ANT_CONFIG, HIGH);
+  #endif
+
+  Serial.println("\n\n     Project: Zigbee On/Off Switch");
+  Serial.printf("       Board: %s\n", TITLE);
+  #ifdef ANTENNA
+  Serial.printf("     Antenna: %s\n", ANTENNA);
+  #endif
+  Serial.printf("IEEE Address: %s\n\n", ZIGBEE_MAC_STR);
 
   //Optional: set Zigbee device name and model
   zbSwitch.setManufacturerAndModel("Espressif", "ZigbeeSwitch");
 
   //Optional to allow multiple light to bind to the switch
   zbSwitch.allowMultipleBinding(true);
+
+  zbSwitch.onLightStateChange(onLightStateChange);
 
   //Add endpoint to Zigbee Core
   Serial.println("Adding ZigbeeSwitch endpoint to Zigbee Core");
@@ -158,6 +258,8 @@ void setup() {
   }
 
   Serial.println();
+
+  xTaskCreate(periodicTask, "periodicTask", 1024 * 4, NULL, 10, NULL);
 }
 
 void loop() {
@@ -191,12 +293,5 @@ void loop() {
       break;
     }
     vTaskDelay(10 / portTICK_PERIOD_MS);
-  }
-
-  // print the bound lights every 10 seconds
-  static uint32_t lastPrint = 0;
-  if (millis() - lastPrint > 10000) {
-    lastPrint = millis();
-    zbSwitch.printBoundDevices(Serial);
   }
 }

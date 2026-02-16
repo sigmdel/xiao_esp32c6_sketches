@@ -33,5 +33,5 @@
  * adapter. Support the XIAO ESP32C6 external antenna if used.
  *
  * Michel Deslierres (https://github.com/sigmdel)
- * Jan 23, 2025
+ * February 16, 2026
  */
