@@ -34,5 +34,5 @@
  *   - support for the XIAO ESP32C6 external antenna added
  *
  * Michel Deslierres (https://github.com/sigmdel)
- * Jan 23, 2025
+ * Febrary 16, 2026
  */
