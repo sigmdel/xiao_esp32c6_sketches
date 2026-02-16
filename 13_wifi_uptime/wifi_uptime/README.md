@@ -2,29 +2,41 @@
 
 This sketch is the first draft of tests designed to compare the Wi-Fi connectivity of three development boards: 
   1. [XIAO ESP32C3](https://github.com/sigmdel/xiao_esp32c3_sketches), 
-  1. [Super Mini C3](https://github.com/sigmdel/supermini_esp32c3_sketches),
+  1. [Super Mini ESP32-C3](https://github.com/sigmdel/supermini_esp32c3_sketches),
   1. [XIAO ESP32C6](https://github.com/sigmdel/xiao_esp32c6_sketches).
 
-The first two are based on the ESP32-C3 microcontroller while the third contains an ESP32-C6. The last two are equipped with an onboard ceramic antenna, while the first has an FPC external antenna connected to the U.FL connector. The wireless communication problems with the Super Mini C3 has already been documented. The Wi-Fi transmit power was reduced to 17 dBm which seemed optimal based on previous tests.
+The first two are based on the ESP32-C3 microcontroller while the third contains an ESP32-C6. The board have different antennas that may result in different Wi-Fi performance.
+<!--
+| Board | Antenna |
+| ---   | ---     |
+| XIAO ESP32C3 | External FPC |
+| Super Mini ESP32-C3 | Onboard ceramic |
+| XIAO ESP32C6 | Onboard ceramic or external |-->
+
+The XIAO ESP32C3 is supplied with an FPC external antenna connected to the U.FL connector. The XIAO ESP32C6 has an onboard ceramic antenna and an U.FL connector but comes without an external antenna. The wireless communication problems with some Super Mini ESP32-C3 with onboard ceramic antenna. In the experiment the Wi-Fi transmit power was reduced to 17 dBm which seemed optimal based on previous tests with the tested Super Mini ESP32-C3.
+
+# Screen Capture
+
+![](../img/screenshot.jpg)
 
 # Preliminary Results
 
-The three boards were placed side by side as far as practical from a Wi-Fi access point while still within the house. The distance between the AP and the boards was about 16 metres with two walls between the devices. The received signal strength indicator values were transcribed into the following table at four different times over almost 3 days.
+The threee boards were placed side by side as far as practical from a Wi-Fi access point while still within the house. The distance between the AP and the boards was about 16 metres with two walls between the devices. The received signal strength indicator values were transcribed into the following table at four different times over almost 3 days.
 
 | Board | 305 min |  1172 min | 4050 min | 4237 min | 
 | ---   |:---: | :---: |  :---: |  :---: |
 | XIAO ESP32C3 | -63 | -75 | -71 | -67 |
-| Super Mini C3 | -83 | -78 | n.c. | -83 |
+| Super Mini ESP32-C3 | -83 | -78 | n.c. | -83 |
 | XIAO ESP32C6 | -88 | -74 | -81 | -89 |
  
-Here n.c. indicates that the Super Mini was not connected. Not only could the web page not be reached, but the device was not even listed among the Wi-Fi clients by the router. Nevertheless, the board reestablished the connection. 
+Here n.c. indicates that the Super Mini was not connected. Not only could the web page not be reached, but the device was not even listed among the Wi-Fi clients by the router. Nevertheless, the board reestablished the connection.
 
 After almost a day of operation, the devices were remarkably cool. 
 
 | Board | Temp (°C) |
 | ---   | ---  |
 | XIAO ESP32C3 | 20.7 |
-| Super Mini C3 | 19.9 |
+| Super Mini ESP32-C3 | 19.9 |
 | XIAO ESP32C6 | 20.6 |
 
 This is basically ambient temperature.
