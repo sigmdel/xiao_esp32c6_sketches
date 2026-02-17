@@ -1,10 +1,10 @@
 # XIAO ESP32C6 Sketches
 
-*February 7, 2026*
+*February 17, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
-:warning: This repository is undergoing *renovations* to bring it up to version 3.3.6 of the ESP32 Arduino core. A release and tag have been created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. Currently, projects `00_sys_info` to `06_async_web_led` have been updated.
+This repository has been updated to work with version 3.3.6 or newer of the ESP32 Arduino core. A release and tag were created to easily recover the original 2025-01-24 release using version 3.1.1 of the core *as if that could be of interest*. 
 
 **Table of Contents**
 <!-- TOC -->
@@ -63,9 +63,9 @@ When compiling a project, select the `XIAO_ESP32C6` board in the `Tools` menu of
 
 While [PlatformIO](https://platformio.org/) is widely used, it is simpler to use the [pioarduino](https://github.com/pioarduino/pioarduino-vscode-ide) fork when working with recent ESP32 microcontrollers.
 
-Unlike the Arduino IDE, pioarduino IDE is not a stand alone application. It is an [extension](https://marketplace.visualstudio.com/items?itemName=pioarduino.pioarduino-ide) that is installed in the code editor [Visual Studio Code](https://code.visualstudio.com/) (VSCode), or [VSCodium](https://vscodium.com/). The later is less well known fork of the former that claims to have removed telemetry/tracking from VSCode. So far, it does not contain the AI additions to VSCode. 
+Unlike the Arduino IDE, pioarduino IDE is not a stand-alone application. It is an [extension](https://marketplace.visualstudio.com/items?itemName=pioarduino.pioarduino-ide) that is installed in the code editor [Visual Studio Code](https://code.visualstudio.com/) (VSCode), or [VSCodium](https://vscodium.com/). The latter is a less well-known fork of the former that claims to have removed telemetry/tracking from VSCode. So far, it does not contain the AI additions to VSCode. 
 
-The pioarduino IDE extension is available in the extension marketplace of both code editors. Consequently, its installation is a simple three step procedure. 
+The pioarduino IDE extension is available in the extension marketplace of both code editors. Consequently, its installation is a simple three-step procedure. 
 
 ![Install pio extension](images/extension_installation.jpg)
 
@@ -94,42 +94,33 @@ The IDE will automatically install the platform first time it is used. Because o
 
 ## 3. List of Projects      
 
-| Project | NB |Purpose |
-| ---     |:---:| --- |
-| **00_sys_info** | | Prints information about the mcu, memory, firmware size and the antenna configuration |
-| **01_pin_names** |  | Shows the content of `pins_arduino.h` and prints some defined macros |
-| **02_blink_pulse_led** | | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
-| **03_scan_wifi** |  | Modified [WiFiScan](https://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino) example from older (3.1.1) esp32-arduino core |
-| **04_wifi_connect_time** | | Measure Wi-Fi connection times and signal strength |
-| **05_wifi_tx_power** |   | Wi-Fi TX power vs connect time |
-| **06_async_web_led**| 1,2,4,5 | Toggles the built-in LED on and off with a Web interface |
-| **07_ble_led**| 1,2 | Toggles the built-in LED on and off with a Bluetooth LE app |
+| Project |Purpose |
+| ---     | --- |
+| **00_sys_info** | Prints information about the mcu, memory, firmware size and the antenna configuration |
+| **01_pin_names** | Shows the content of `pins_arduino.h` and prints some defined macros |
+| **02_blink_pulse_led** | Using `digitalRead`, `digitalWrite`, `analogWrite` (PWM) |
+| **03_scan_wifi** | Modified [WiFiScan](https://github.com/espressif/arduino-esp32/blob/3.1.1/libraries/WiFi/examples/WiFiScan/WiFiScan.ino) example from older (3.1.1) esp32-arduino core |
+| **04_wifi_connect_time** | Measure Wi-Fi connection times and signal strength |
+| **05_wifi_tx_power** | Wi-Fi TX power vs connect time |
+| **06_async_web_led**| Toggles the built-in LED on and off with a Web interface |
+| **07_ble_led**| Toggles the built-in LED on and off with a Bluetooth LE app |
 | ~~08_zigbee_switch~~|  | *use 14_zigbee_on_off_switch*  |
 | ~~09_zigbee_bulb~~  |  | *use 15_zigbee_on_off_light* |
-| **10_deep_sleep_tmr** | | Deep sleep with timed wake up |
-| **11_deep_sleep_io** | 8 | Deep sleep with wake up on I/O event |
-| **12_xiao32c6_antenna** | | Examines the I/O configuration for the antenna RF switch |
-| **13_wifi_uptime** | 5 | Comparing Wi-Fi connectivity across boards|
-| **14_zigbee_on_off_switch**| 6,7 | Modified [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.1.1/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino 3.1.1 core |
-| **15_zigbee_on_off_light**  | 6,7 | Modified [Zigbee_On_Off_Light](https://github.com/espressif/arduino-esp32/tree/3.1.1/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino 3.1.1 core |
+| **10_deep_sleep_tmr** | Deep sleep with timed wake up |
+| **11_deep_sleep_io** | Deep sleep with wake up on I/O event |
+| **12_xiao32c6_antenna** | Examines the I/O configuration for the antenna RF switch |
+| **13_wifi_uptime** | Comparing Wi-Fi connectivity across boards|
+| **14_zigbee_on_off_switch**| Modified [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino 3.3.6 core |
+| **15_zigbee_on_off_light**  | Modified [Zigbee_On_Off_Light](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino 3.3.6 core |
+| **16_MatterOnOffLight** | Modified [MatterOnOffLight]() example from the esp32-arduino 3.3.6 core |
 
-NB:
-  1. Similar to sketch in [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)
-  2. Similar to sketch in [supermini_esp32c3_sketches](https://github.com/sigmdel/supermini_esp32c3_sketches)
-  3. Released under the GNU LESSER GENERAL PUBLIC LICENSE.
-  4. Create a `secret.h` file with the correct Wi-Fi credentials using the `secrets.h.template` as a model. 
-  5. Need to install two libraries. The details are in [libraries/README.md](libraries/README.md).
-  6. Released under the Apache License, Version 2.0. 
-  7. Added support for some XIAO ESP32C6 features.
-  8. Requires an external pull up resistor in [most cases](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html#deep_sleep).
-  9. Deprecated
+Most of these projects will work with the newer XIAO ESP32C5 (see [xiao_esp32c5_sketches](https://github.com/sigmdel/xiao_esp32c5_sketches)) and the older XIAO ESP32C3 (see [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)). 
 
 ### 3.1. About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
 
 These sketches replace the deprecated `08_zigbee_switch` and `09_zigbee_bulb` sketches respectively.
 
-Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
-
+Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 or XIAO ESP32C5 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6 or XIAO ESP32C5. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
 
 ### 3.2. Further Details:
 
@@ -137,12 +128,13 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 ## 4. Change Log
 
-0_sys_info		Prints information about the mcu, memory, firmware size and the antenna configuration
-01_pin_names	1,2	Shows the content of pins_arduino.h, report defined macros
-02_blink_pulse_led
 
 | Date | Change |
 | :---  |  :--- |
+| 2026-02-17 | Removed seeed_xiao_esp32c6.json board definition now included in ESP32 arduino core and added modified MatterOnOffLight example |
+| 2026-02-16 | Update wifi_uptime, Zigbee_On_Off_Switch, Zigbee_On_Off_Light | 
+| 2026-02-15 | Update ble_led, deep_sleep_tmr, deep_sleep_io, xiao32c6_antenna |
+| 2026-02-11 | Added more build macros in pin_names.ino |
 | 2026-02-07 | Update the configuration files and the 06_async_web_led |
 | 2026-01-30 | Remove 04_wifi_blackhole and replace with 04_wifi_connect_time. Update 05_wifi_tx_power. Add pioarduino info |
 | 2026-01-29 | Add MACs library. Update 03_scan_wifi |
