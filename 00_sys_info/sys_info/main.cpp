@@ -126,7 +126,7 @@ void getInfo(void) {
 	Serial.println("\nHeap");
 	Serial.printf("  Size: %lu\n", ESP.getHeapSize()); //total heap size
 	Serial.printf("  Free: %lu\n", ESP.getFreeHeap()); //available heap
-	Serial.printf("  Mininum free since boot: %lu\n", ESP.getMinFreeHeap()); //lowest level of free heap since boot
+	Serial.printf("  Minimum free since boot: %lu\n", ESP.getMinFreeHeap()); //lowest level of free heap since boot
 	Serial.printf("  Maximum allocation size: %lu\n", ESP.getMaxAllocHeap()); //largest block of heap that can be allocated
 
   #ifdef ARDUINO_XIAO_ESP32C6 
@@ -135,7 +135,6 @@ void getInfo(void) {
   Serial.printf("  Configuration: %s antenna\n", (digitalRead(WIFI_ANT_CONFIG)) ? "external" : "onboard ceramic");
   #endif 
 }
-
 
 void setup() {
   // Delay to allow for the initialization of the native USB peripheral
