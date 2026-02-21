@@ -1,6 +1,6 @@
 # XIAO ESP32C6 Sketches
 
-*February 17, 2026*
+*February 21, 2026*
 
 **Arduino source code that accompanies [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html)**.
 
@@ -15,7 +15,8 @@ This repository has been updated to work with version 3.3.6 or newer of the ESP3
   - [2.2. pioarduino](#22-pioarduino)
 - [3. List of Projects](#3-list-of-projects)
   - [3.1. About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light`](#31-about-14_zigbee_on_off_switch-and-15_zigbee_on_off_light)
-  - [3.2. Further Details:](#32-further-details)
+  - [3.2. About `16_matter-on-off-light` and `17_matter-on-off-switch`](#32-about-16_matter-on-off-light-and-17_matter-on-off-switch)
+  - [3.3. Further Details](#33-further-details)
 - [4. Change Log](#4-change-log)
 - [5. License](#5-license)
 
@@ -112,9 +113,10 @@ The IDE will automatically install the platform first time it is used. Because o
 | **13_wifi_uptime** | Comparing Wi-Fi connectivity across boards|
 | **14_zigbee_on_off_switch**| Modified [Zigbee_On_Off_Switch](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Zigbee/examples/Zigbee_On_Off_Switch) example from the esp32-arduino 3.3.6 core |
 | **15_zigbee_on_off_light**  | Modified [Zigbee_On_Off_Light](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Zigbee/examples/Zigbee_On_Off_Light) example from the esp32-arduino 3.3.6 core |
-| **16_MatterOnOffLight** | Modified [MatterOnOffLight]() example from the esp32-arduino 3.3.6 core |
+| **16_matter-on-off-light** | Modified [MatterOnOffLight](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Matter/examples/MatterOnOffLight) example from the esp32-arduino 3.3.6 core |
+| **17_matter-on-off-switch** | Modifide [MatterSmartButton](https://github.com/espressif/arduino-esp32/tree/3.3.6/libraries/Matter/examples/MatterSmartButton) example from the esp32-arduino 3.3.6 core |
 
-Most of these projects will work with the newer XIAO ESP32C5 (see [xiao_esp32c5_sketches](https://github.com/sigmdel/xiao_esp32c5_sketches)) and the older XIAO ESP32C3 (see [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)). 
+Many of these projects will work with the newer XIAO ESP32C5 (see [xiao_esp32c5_sketches](https://github.com/sigmdel/xiao_esp32c5_sketches)) and the older XIAO ESP32C3 (see [xiao_esp32c3_sketches](https://github.com/sigmdel/xiao_esp32c3_sketches)). 
 
 ### 3.1. About `14_zigbee_on_off_switch` and `15_zigbee_on_off_light` 
 
@@ -122,7 +124,11 @@ These sketches replace the deprecated `08_zigbee_switch` and `09_zigbee_bulb` sk
 
 Flash the Zigbee_On_Off_Switch firmware on one XIAO ESP32C6 or XIAO ESP32C5 and the Zigbee_On_Off_Light firmware on a second XIAO ESP32C6 or XIAO ESP32C5. The boot button on the first board will toggle the yellow LED on/off on the second board. However, the Zigbee_On_Off_Light end device can be used with a single XIAO because it will connect to a Zigbee2MQTT coordinator and its on-board LED can be controlled from the coordinator's web interface. 
 
-### 3.2. Further Details:
+### 3.2. About `16_matter-on-off-light` and `17_matter-on-off-switch` 
+
+These are similar to the Zigbee projects but they require a Matter coordinator. Upload the switch firmware to a XIAO ESP32C6 and the light firmware to a second XIAO ESP32C6 and the user LED of the latter can be toggled on and off with the boot button of the former if both Matter devices are connected to a Matter coordinator and if a routine to handle the click event from the switch device to toggle the light device has been created. This was tested using the Amazon Alexa app and a 4th gen. Echo Dot. The two devices run on the same WiFi network as the Echo Dot, but their commissioning is done using Bluetooth LE to communicate with the Echo Dot. 
+
+### 3.3. Further Details
 
 See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/xiao/xiao_esp32c6_intro_en.html) for some details about these programs. 
 
@@ -131,6 +137,7 @@ See [First Look at the Seeed Studio XIAO ESP32C6](https://sigmdel.ca/michel/ha/x
 
 | Date | Change |
 | :---  |  :--- |
+| 2026-02-21 | Cleaned up some projects and added a modified MatterSmartButton example |
 | 2026-02-17 | Removed seeed_xiao_esp32c6.json board definition now included in ESP32 arduino core and added modified MatterOnOffLight example |
 | 2026-02-16 | Update wifi_uptime, Zigbee_On_Off_Switch, Zigbee_On_Off_Light | 
 | 2026-02-15 | Update ble_led, deep_sleep_tmr, deep_sleep_io, xiao32c6_antenna |
