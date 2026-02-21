@@ -54,9 +54,6 @@
 #elif defined(ARDUINO_XIAO_ESP32C3)
   #define TITLE "XIAO_ESP32C3"
   #define ANTENNA "V1.2 FPC"
-  //#elif defined(ARDUINO_XIAO_ESP32C5)  // not yet supported
-  //  #define TITLE "XIAO_ESP32C5"
-  //  #define ANTENNA "A-01 FPC"
 #elif defined(ARDUINO_XIAO_ESP32C6)
   // The onboard ceramic antenna is used by default.
   #define TITLE "XIAO ESP32C6"
